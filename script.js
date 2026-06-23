@@ -8,15 +8,6 @@ function getValue(id) {
   return document.getElementById(id)?.value.trim() || "";
 }
 
-function setLoading(status) {
-  if (!submitBtn) return;
-
-  submitBtn.disabled = status;
-  submitBtn.innerHTML = status
-    ? "Submitting..."
-    : '<i class="fab fa-whatsapp"></i> Submit Request';
-}
-
 function createWhatsAppLink(data) {
   const message =
     `NEW DEMO REQUEST\n\n` +
@@ -45,34 +36,26 @@ if (demoForm) {
       message: getValue("message")
     };
 
-    if (
-      !formData.name ||
-      !formData.phone ||
-      !formData.email ||
-      !formData.business ||
-      !formData.businessType ||
-      !formData.service
-    ) {
+    if (!formData.name || !formData.phone || !formData.email || !formData.business || !formData.businessType || !formData.service) {
       alert("Please fill all required fields");
       return;
     }
 
-    setLoading(true);
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = "Submitting...";
+    }
 
     localStorage.setItem("demoData", JSON.stringify(formData));
     localStorage.setItem("whatsappLink", createWhatsAppLink(formData));
 
     fetch(API_URL, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData)
-    }).catch((error) => {
-      console.error("Submit Error:", error);
-    });
+    }).catch(console.error);
 
-    window.location.href = "/thank-you.html";
+    window.location.href = "thank-you.html";
   });
 }
 

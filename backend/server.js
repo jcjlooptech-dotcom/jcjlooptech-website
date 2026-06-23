@@ -23,18 +23,20 @@ const allowedOrigins = [
   "https://looptech-website.onrender.com"
 ];
 
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  methods: ["GET", "POST", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true
-}));
+app.use(
+  cors({
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Not allowed by CORS"));
+    },
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true
+  })
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -42,13 +44,13 @@ app.use(express.static(ROOT_DIR));
 
 const demoSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true },
-    phone: { type: String, required: true },
-    email: { type: String, required: true },
-    business: { type: String, required: true },
-    businessType: { type: String, required: true },
-    service: { type: String, required: true },
-    message: { type: String, default: "" }
+    name: { type: String, required: true, trim: true },
+    phone: { type: String, required: true, trim: true },
+    email: { type: String, required: true, trim: true },
+    business: { type: String, required: true, trim: true },
+    businessType: { type: String, required: true, trim: true },
+    service: { type: String, required: true, trim: true },
+    message: { type: String, default: "", trim: true }
   },
   { timestamps: true }
 );
@@ -59,19 +61,11 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(ROOT_DIR, "index.html"));
 });
 
-app.get("/book-demo", (req, res) => {
+app.get(["/book-demo", "/book-demo.html"], (req, res) => {
   res.sendFile(path.join(ROOT_DIR, "book-demo.html"));
 });
 
-app.get("/book-demo.html", (req, res) => {
-  res.sendFile(path.join(ROOT_DIR, "book-demo.html"));
-});
-
-app.get("/thank-you", (req, res) => {
-  res.sendFile(path.join(ROOT_DIR, "thank-you.html"));
-});
-
-app.get("/thank-you.html", (req, res) => {
+app.get(["/thank-you", "/thank-you.html"], (req, res) => {
   res.sendFile(path.join(ROOT_DIR, "thank-you.html"));
 });
 
@@ -108,7 +102,9 @@ app.post("/api/book-demo", async (req, res) => {
       message: "Demo request submitted successfully"
     });
 
-    sendEmails(demoRequest);
+    sendEmails(demoRequest).catch((error) => {
+      console.log("Background Email Error:", error.message);
+    });
   } catch (error) {
     console.error("Server Error:", error.message);
 
@@ -119,70 +115,72 @@ app.post("/api/book-demo", async (req, res) => {
   }
 });
 
-async function sendEmails(data) {
-  try {
-    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-      console.log("Email skipped: EMAIL_USER or EMAIL_PASS missing");
-      return;
+function createTransporter() {
+  return nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
+    family: 4,
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS
     }
+  });
+}
 
-    const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
-      family: 4,
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      }
-    });
+async function sendEmails(data) {
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    console.log("Email skipped: EMAIL_USER or EMAIL_PASS missing");
+    return;
+  }
 
-    await transporter.sendMail({
-      from: `"LoopTech Website" <${process.env.EMAIL_USER}>`,
-      to: process.env.EMAIL_USER,
-      subject: "New Demo Request - LoopTech",
-      html: `
-        <h2>New Demo Request</h2>
-        <p><b>Name:</b> ${data.name}</p>
-        <p><b>Phone:</b> ${data.phone}</p>
-        <p><b>Email:</b> ${data.email}</p>
+  const transporter = createTransporter();
+
+  await transporter.sendMail({
+    from: `"LoopTech Website" <${process.env.EMAIL_USER}>`,
+    to: process.env.EMAIL_USER,
+    subject: "New Demo Request - LoopTech",
+    html: `
+      <h2>New Demo Request</h2>
+      <p><b>Name:</b> ${data.name}</p>
+      <p><b>Phone:</b> ${data.phone}</p>
+      <p><b>Email:</b> ${data.email}</p>
+      <p><b>Business:</b> ${data.business}</p>
+      <p><b>Industry:</b> ${data.businessType}</p>
+      <p><b>Service:</b> ${data.service}</p>
+      <p><b>Message:</b> ${data.message || "No message"}</p>
+    `
+  });
+
+  await transporter.sendMail({
+    from: `"LoopTech Software Solutions" <${process.env.EMAIL_USER}>`,
+    to: data.email,
+    subject: "Thank You For Contacting LoopTech",
+    html: `
+      <div style="font-family:Segoe UI,Arial,sans-serif;color:#222;line-height:1.7">
+        <h2 style="color:#081c3a">Thank You, ${data.name}!</h2>
+
+        <p>Your demo request has been submitted successfully.</p>
+        <p>Our LoopTech team will contact you shortly.</p>
+
+        <hr>
+
+        <h3>Your Request Details</h3>
         <p><b>Business:</b> ${data.business}</p>
         <p><b>Industry:</b> ${data.businessType}</p>
         <p><b>Service:</b> ${data.service}</p>
-        <p><b>Message:</b> ${data.message || "No message"}</p>
-      `
-    });
 
-    await transporter.sendMail({
-      from: `"LoopTech Software Solutions" <${process.env.EMAIL_USER}>`,
-      to: data.email,
-      subject: "Thank You For Contacting LoopTech",
-      html: `
-        <div style="font-family:Segoe UI,sans-serif;color:#222;line-height:1.6">
-          <h2 style="color:#081c3a">Thank You, ${data.name}!</h2>
-          <p>Your demo request has been submitted successfully.</p>
-          <p>Our LoopTech team will contact you shortly.</p>
+        <br>
 
-          <hr />
+        <p><b>LoopTech Software Solutions</b></p>
+        <p>Phone: +971 56 727 5589</p>
+        <p>Email: jcjlooptech@gmail.com</p>
+        <p>Location: Abu Dhabi, UAE</p>
+      </div>
+    `
+  });
 
-          <p><b>Business:</b> ${data.business}</p>
-          <p><b>Industry:</b> ${data.businessType}</p>
-          <p><b>Service:</b> ${data.service}</p>
-
-          <br />
-
-          <p><b>LoopTech Software Solutions</b></p>
-          <p>Phone: +971 56 727 5589</p>
-          <p>Email: jcjlooptech@gmail.com</p>
-          <p>Location: Abu Dhabi, UAE</p>
-        </div>
-      `
-    });
-
-    console.log("Emails sent successfully");
-  } catch (error) {
-    console.log("Email Error:", error.message);
-  }
+  console.log("Emails sent successfully");
 }
 
 async function startServer() {
