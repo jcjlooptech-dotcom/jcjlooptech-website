@@ -11,20 +11,28 @@ dns.setDefaultResultOrder("ipv4first");
 const app = express();
 
 const PORT = process.env.PORT || 5000;
-const ADMIN_WHATSAPP = "971567275589";
 const ROOT_DIR = path.join(__dirname, "..");
 
+const allowedOrigins = [
+  "http://localhost:5000",
+  "http://localhost:5500",
+  "http://127.0.0.1:5500",
+  "https://jcjlooptech.com",
+  "https://www.jcjlooptech.com",
+  "https://jcjlooptech-website.vercel.app",
+  "https://looptech-website.onrender.com"
+];
+
 app.use(cors({
-  origin: [
-    "http://localhost:5000",
-    "http://localhost:5500",
-    "http://127.0.0.1:5500",
-    "https://jcjlooptech.com",
-    "https://www.jcjlooptech.com",
-    "https://looptech-website-beryl.vercel.app",
-    "https://looptech-website.onrender.com"
-  ],
-  methods: ["GET", "POST"],
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true
 }));
 
@@ -63,6 +71,10 @@ app.get("/thank-you", (req, res) => {
   res.sendFile(path.join(ROOT_DIR, "thank-you.html"));
 });
 
+app.get("/thank-you.html", (req, res) => {
+  res.sendFile(path.join(ROOT_DIR, "thank-you.html"));
+});
+
 app.get("/health", (req, res) => {
   res.status(200).json({
     success: true,
@@ -72,15 +84,7 @@ app.get("/health", (req, res) => {
 
 app.post("/api/book-demo", async (req, res) => {
   try {
-    const {
-      name,
-      phone,
-      email,
-      business,
-      businessType,
-      service,
-      message
-    } = req.body;
+    const { name, phone, email, business, businessType, service, message } = req.body;
 
     if (!name || !phone || !email || !business || !businessType || !service) {
       return res.status(400).json({
@@ -99,23 +103,12 @@ app.post("/api/book-demo", async (req, res) => {
       message: message || ""
     });
 
-    await sendEmails(demoRequest);
-
-    const whatsappText =
-      `NEW DEMO REQUEST\n\n` +
-      `Name: ${name}\n` +
-      `Phone: ${phone}\n` +
-      `Email: ${email}\n` +
-      `Business: ${business}\n` +
-      `Industry: ${businessType}\n` +
-      `Service: ${service}\n` +
-      `Message: ${message || "No message"}`;
-
     res.status(201).json({
       success: true,
-      message: "Thank you! Your demo request submitted successfully.",
-      whatsapp: `https://wa.me/${ADMIN_WHATSAPP}?text=${encodeURIComponent(whatsappText)}`
+      message: "Demo request submitted successfully"
     });
+
+    sendEmails(demoRequest);
   } catch (error) {
     console.error("Server Error:", error.message);
 
@@ -127,12 +120,12 @@ app.post("/api/book-demo", async (req, res) => {
 });
 
 async function sendEmails(data) {
-  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-    console.log("Email skipped: EMAIL_USER or EMAIL_PASS missing");
-    return;
-  }
-
   try {
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+      console.log("Email skipped: EMAIL_USER or EMAIL_PASS missing");
+      return;
+    }
+
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 587,
@@ -165,19 +158,18 @@ async function sendEmails(data) {
       to: data.email,
       subject: "Thank You For Contacting LoopTech",
       html: `
-        <div style="font-family:Segoe UI,sans-serif;padding:20px;color:#222">
+        <div style="font-family:Segoe UI,sans-serif;color:#222;line-height:1.6">
           <h2 style="color:#081c3a">Thank You, ${data.name}!</h2>
           <p>Your demo request has been submitted successfully.</p>
           <p>Our LoopTech team will contact you shortly.</p>
 
-          <hr>
+          <hr />
 
-          <h3>Your Request Details</h3>
           <p><b>Business:</b> ${data.business}</p>
           <p><b>Industry:</b> ${data.businessType}</p>
           <p><b>Service:</b> ${data.service}</p>
 
-          <br>
+          <br />
 
           <p><b>LoopTech Software Solutions</b></p>
           <p>Phone: +971 56 727 5589</p>
