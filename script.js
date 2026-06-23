@@ -5,8 +5,7 @@ const demoForm = document.getElementById("demoForm");
 const submitBtn = document.getElementById("submitBtn");
 
 function getValue(id) {
-  const element = document.getElementById(id);
-  return element ? element.value.trim() : "";
+  return document.getElementById(id)?.value.trim() || "";
 }
 
 function setLoading(status) {
@@ -18,25 +17,22 @@ function setLoading(status) {
     : '<i class="fab fa-whatsapp"></i> Submit Request';
 }
 
-function openWhatsApp(formData) {
-  const whatsappText =
+function createWhatsAppLink(data) {
+  const message =
     `NEW DEMO REQUEST\n\n` +
-    `Name: ${formData.name}\n` +
-    `Phone: ${formData.phone}\n` +
-    `Email: ${formData.email}\n` +
-    `Business: ${formData.business}\n` +
-    `Industry: ${formData.businessType}\n` +
-    `Service: ${formData.service}\n` +
-    `Message: ${formData.message || "No message"}`;
+    `Name: ${data.name}\n` +
+    `Phone: ${data.phone}\n` +
+    `Email: ${data.email}\n` +
+    `Business: ${data.business}\n` +
+    `Industry: ${data.businessType}\n` +
+    `Service: ${data.service}\n` +
+    `Message: ${data.message || "No message"}`;
 
-  window.open(
-    `https://wa.me/${ADMIN_WHATSAPP}?text=${encodeURIComponent(whatsappText)}`,
-    "_blank"
-  );
+  return `https://wa.me/${ADMIN_WHATSAPP}?text=${encodeURIComponent(message)}`;
 }
 
 if (demoForm) {
-  demoForm.addEventListener("submit", function (e) {
+  demoForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
     const formData = {
@@ -62,9 +58,9 @@ if (demoForm) {
     }
 
     setLoading(true);
-    localStorage.setItem("demoData", JSON.stringify(formData));
 
-    openWhatsApp(formData);
+    localStorage.setItem("demoData", JSON.stringify(formData));
+    localStorage.setItem("whatsappLink", createWhatsAppLink(formData));
 
     fetch(API_URL, {
       method: "POST",
@@ -72,22 +68,20 @@ if (demoForm) {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(formData)
-    }).catch(function (error) {
+    }).catch((error) => {
       console.error("Submit Error:", error);
     });
 
-    setTimeout(function () {
-      window.location.href = "thank-you.html";
-    }, 500);
+    window.location.href = "/thank-you.html";
   });
 }
 
-document.querySelectorAll(".count").forEach(function (counter) {
+document.querySelectorAll(".count").forEach((counter) => {
   const target = Number(counter.dataset.target || 0);
   let current = 0;
   const step = Math.max(1, Math.ceil(target / 100));
 
-  const timer = setInterval(function () {
+  const timer = setInterval(() => {
     current += step;
 
     if (current >= target) {
