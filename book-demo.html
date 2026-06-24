@@ -5,253 +5,268 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>Book Free POS Software Demo | LoopTech UAE</title>
-  <meta name="description" content="Book a free demo for POS Software, ERP Software and UAE E-Invoice Solutions." />
+  <meta name="description" content="Book a free demo for POS Software, ERP Software and UAE E-Invoice Solutions from LoopTech Software Solutions." />
 
+  <link rel="icon" href="logo.png" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
     }
 
-    body {
-      font-family: "Segoe UI", sans-serif;
-      background: #f5f7fa;
-      color: #222;
+    body{
+      font-family:"Segoe UI",sans-serif;
+      background:#f5f7fa;
+      color:#222;
     }
 
-    .header {
-      background: #081c3a;
-      padding: 18px 8%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    .header{
+      background:#081c3a;
+      padding:18px 8%;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
     }
 
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      color: #fff;
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      color:#fff;
     }
 
-    .logo img {
-      width: 60px;
+    .logo img{
+      width:65px;
+      background:#fff;
+      border-radius:8px;
     }
 
-    .logo h2 {
-      font-size: 24px;
+    .logo h2{
+      font-size:26px;
     }
 
-    .home-btn {
-      background: #00c6ff;
-      color: #fff;
-      padding: 10px 22px;
-      border-radius: 30px;
-      text-decoration: none;
-      font-weight: 700;
+    .home-btn{
+      background:#00c6ff;
+      color:#fff;
+      padding:12px 28px;
+      border-radius:30px;
+      text-decoration:none;
+      font-weight:700;
     }
 
-    .hero {
-      background: linear-gradient(135deg, #081c3a, #00c6ff);
-      padding: 70px 8% 100px;
-      text-align: center;
-      color: #fff;
+    .hero{
+      background:linear-gradient(135deg,#081c3a,#00c6ff);
+      padding:70px 8% 100px;
+      text-align:center;
+      color:#fff;
     }
 
-    .hero h1 {
-      font-size: 42px;
-      margin-bottom: 15px;
+    .hero h1{
+      font-size:42px;
+      margin-bottom:15px;
     }
 
-    .hero p {
-      max-width: 720px;
-      margin: auto;
-      font-size: 18px;
-      line-height: 1.6;
+    .hero p{
+      max-width:760px;
+      margin:auto;
+      font-size:18px;
+      line-height:1.7;
     }
 
-    .container {
-      max-width: 1000px;
-      margin: -50px auto 50px;
-      padding: 0 20px;
+    .container{
+      max-width:1000px;
+      margin:-50px auto 50px;
+      padding:0 20px;
     }
 
-    .form-box {
-      background: #fff;
-      padding: 40px;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    .form-box{
+      background:#fff;
+      padding:40px;
+      border-radius:20px;
+      box-shadow:0 10px 30px rgba(0,0,0,.1);
     }
 
-    .form-box h2 {
-      text-align: center;
-      margin-bottom: 25px;
-      color: #081c3a;
+    .form-box h2{
+      text-align:center;
+      margin-bottom:25px;
+      color:#081c3a;
     }
 
-    .success-box {
-      display: none;
-      background: #d1fae5;
-      color: #065f46;
-      padding: 15px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      text-align: center;
-      font-weight: 700;
-    }
-
-    .form-group {
-      margin-bottom: 18px;
+    .form-group{
+      margin-bottom:18px;
     }
 
     input,
     select,
-    textarea {
-      width: 100%;
-      padding: 14px;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      font-size: 15px;
-      outline: none;
-      font-family: inherit;
+    textarea{
+      width:100%;
+      padding:14px;
+      border:1px solid #ddd;
+      border-radius:10px;
+      font-size:15px;
+      outline:none;
+      font-family:inherit;
+      background:#fff;
     }
 
     input:focus,
     select:focus,
-    textarea:focus {
-      border-color: #00c6ff;
+    textarea:focus{
+      border-color:#00c6ff;
     }
 
-    textarea {
-      min-height: 120px;
-      resize: vertical;
+    .phone-group{
+      display:flex;
+      gap:10px;
     }
 
-    .submit-btn {
-      width: 100%;
-      background: #25d366;
-      border: none;
-      padding: 16px;
-      border-radius: 10px;
-      font-size: 20px;
-      color: #fff;
-      font-weight: 700;
-      cursor: pointer;
-      transition: 0.3s ease;
+    .phone-group select{
+      width:35%;
     }
 
-    .submit-btn:hover {
-      background: #1db954;
+    .phone-group input{
+      width:65%;
     }
 
-    .submit-btn:disabled {
-      opacity: 0.7;
-      cursor: not-allowed;
+    textarea{
+      min-height:120px;
+      resize:vertical;
     }
 
-    .features {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      margin-top: 40px;
+    .submit-btn{
+      width:100%;
+      background:#25d366;
+      border:none;
+      padding:16px;
+      border-radius:10px;
+      font-size:20px;
+      color:#fff;
+      font-weight:700;
+      cursor:pointer;
+      transition:.3s ease;
     }
 
-    .feature {
-      background: #fff;
-      padding: 30px;
-      border-radius: 15px;
-      text-align: center;
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    .submit-btn:hover{
+      background:#1db954;
     }
 
-    .feature i {
-      font-size: 42px;
-      color: #00c6ff;
-      margin-bottom: 15px;
+    .submit-btn:disabled{
+      opacity:.7;
+      cursor:not-allowed;
     }
 
-    .feature h3 {
-      margin-bottom: 10px;
-      color: #081c3a;
+    .features{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:20px;
+      margin-top:40px;
     }
 
-    .footer {
-      background: #081c3a;
-      color: #fff;
-      padding: 45px 20px;
-      text-align: center;
+    .feature{
+      background:#fff;
+      padding:30px;
+      border-radius:15px;
+      text-align:center;
+      box-shadow:0 5px 20px rgba(0,0,0,.08);
     }
 
-    .footer h2 {
-      margin-bottom: 20px;
+    .feature i{
+      font-size:42px;
+      color:#00c6ff;
+      margin-bottom:15px;
     }
 
-    .footer p {
-      margin: 8px 0;
-      font-size: 18px;
+    .feature h3{
+      margin-bottom:10px;
+      color:#081c3a;
     }
 
-    .footer a {
-      color: #fff;
-      text-decoration: none;
+    .footer{
+      background:#081c3a;
+      color:#fff;
+      padding:45px 20px;
+      text-align:center;
+    }
+
+    .footer h2{
+      margin-bottom:20px;
+    }
+
+    .footer p{
+      margin:8px 0;
+      font-size:18px;
+    }
+
+    .footer a{
+      color:#fff;
+      text-decoration:none;
     }
 
     .float-call,
-    .float-whatsapp {
-      position: fixed;
-      right: 20px;
-      width: 65px;
-      height: 65px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      text-decoration: none;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      z-index: 999;
+    .float-whatsapp{
+      position:fixed;
+      right:20px;
+      width:65px;
+      height:65px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#fff;
+      text-decoration:none;
+      box-shadow:0 5px 15px rgba(0,0,0,.3);
+      z-index:999;
     }
 
-    .float-call {
-      bottom: 115px;
-      background: #ff7a00;
-      font-size: 28px;
+    .float-call{
+      bottom:115px;
+      background:#ff7a00;
+      font-size:28px;
     }
 
-    .float-whatsapp {
-      bottom: 35px;
-      background: #25d366;
-      font-size: 32px;
+    .float-whatsapp{
+      bottom:35px;
+      background:#25d366;
+      font-size:32px;
     }
 
-    @media (max-width: 768px) {
-      .header {
-        padding: 15px 5%;
+    @media(max-width:768px){
+      .header{
+        padding:15px 5%;
       }
 
-      .hero {
-        padding: 55px 6% 90px;
+      .hero{
+        padding:55px 6% 90px;
       }
 
-      .hero h1 {
-        font-size: 30px;
+      .hero h1{
+        font-size:30px;
       }
 
-      .logo h2 {
-        font-size: 18px;
+      .logo h2{
+        font-size:20px;
       }
 
-      .form-box {
-        padding: 25px;
+      .form-box{
+        padding:25px;
+      }
+
+      .phone-group{
+        flex-direction:column;
+      }
+
+      .phone-group select,
+      .phone-group input{
+        width:100%;
       }
 
       .float-call,
-      .float-whatsapp {
-        width: 55px;
-        height: 55px;
+      .float-whatsapp{
+        width:55px;
+        height:55px;
       }
     }
   </style>
@@ -279,15 +294,27 @@
     <section class="form-box">
       <h2>Request a Free Demo</h2>
 
-      <div id="successBox" class="success-box"></div>
-
       <form id="demoForm">
         <div class="form-group">
           <input type="text" id="name" placeholder="Full Name" required />
         </div>
 
         <div class="form-group">
-          <input type="tel" id="phone" placeholder="Phone Number" required />
+          <div class="phone-group">
+            <select id="countryCode" required>
+              <option value="+971">🇦🇪 UAE (+971)</option>
+              <option value="+966">🇸🇦 Saudi Arabia (+966)</option>
+              <option value="+974">🇶🇦 Qatar (+974)</option>
+              <option value="+968">🇴🇲 Oman (+968)</option>
+              <option value="+973">🇧🇭 Bahrain (+973)</option>
+              <option value="+965">🇰🇼 Kuwait (+965)</option>
+              <option value="+91">🇮🇳 India (+91)</option>
+              <option value="+1">🇺🇸 USA (+1)</option>
+              <option value="+44">🇬🇧 UK (+44)</option>
+            </select>
+
+            <input type="tel" id="phone" placeholder="Phone Number" required />
+          </div>
         </div>
 
         <div class="form-group">
@@ -311,6 +338,14 @@
             <option>Fashion & Garment Store</option>
             <option>Other Business</option>
           </select>
+        </div>
+
+        <div class="form-group" id="otherBusinessGroup" style="display:none;">
+          <input
+            type="text"
+            id="otherBusiness"
+            placeholder="Enter Business Type"
+          />
         </div>
 
         <div class="form-group">
@@ -359,7 +394,7 @@
   <footer class="footer">
     <h2>LoopTech Software Solutions</h2>
     <p>📞 <a href="tel:+971567275589">+971 56 727 5589</a></p>
-    <p>📧 <a href="mailto:jcjlooptech@gmail.com">jcjlooptech@gmail.com</a></p>
+    <p>📧 <a href="mailto:jcjlooptech@outlook.com">jcjlooptech@outlook.com</a></p>
     <p>📍 Abu Dhabi, UAE</p>
     <p>© 2026 LoopTech. All Rights Reserved.</p>
   </footer>
@@ -373,5 +408,22 @@
   </a>
 
   <script src="script.js"></script>
+
+  <script>
+    const businessType = document.getElementById("businessType");
+    const otherBusinessGroup = document.getElementById("otherBusinessGroup");
+    const otherBusiness = document.getElementById("otherBusiness");
+
+    businessType.addEventListener("change", function () {
+      if (this.value === "Other Business") {
+        otherBusinessGroup.style.display = "block";
+        otherBusiness.required = true;
+      } else {
+        otherBusinessGroup.style.display = "none";
+        otherBusiness.required = false;
+        otherBusiness.value = "";
+      }
+    });
+  </script>
 </body>
 </html>
