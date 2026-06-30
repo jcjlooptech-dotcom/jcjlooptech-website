@@ -1,280 +1,260 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>POS Software UAE | ERP Software UAE | E-Invoice Solutions | LoopTech</title>
+  <title>POS Software UAE & GCC | ERP Software | E-Invoice Solutions | LoopTech</title>
 
-  <meta name="description" content="LoopTech Software Solutions provides POS Software, ERP Software, UAE E-Invoice Solutions, Inventory Management, Website Development and Digital Marketing services across UAE and GCC." />
-  <meta name="keywords" content="POS Software UAE, ERP Software UAE, E-Invoice UAE, Restaurant POS UAE, Retail POS UAE, Pharmacy POS UAE, Supermarket POS UAE, Inventory Software UAE, Website Development UAE, Digital Marketing UAE" />
-  <meta name="author" content="LoopTech Software Solutions" />
-  <meta name="robots" content="index, follow" />
+  <meta name="description" content="LoopTech Software Solutions provides affordable POS Software, ERP Software, UAE E-Invoice Solutions, Inventory Management, Website Development and Digital Marketing services across UAE and GCC.">
+  <meta name="keywords" content="POS Software UAE, POS Software GCC, ERP Software UAE, E-Invoice UAE, Restaurant POS UAE, Retail POS UAE, Pharmacy POS UAE, Supermarket POS UAE, Inventory Software UAE, Website Development UAE, Digital Marketing UAE, POS Software Abu Dhabi, POS Software Dubai">
+  <meta name="author" content="LoopTech Software Solutions">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://jcjlooptech.com/">
 
-  <link rel="icon" href="logo.png" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <meta property="og:title" content="LoopTech Software Solutions | POS, ERP & E-Invoice UAE">
+  <meta property="og:description" content="Affordable POS Software, ERP Software and UAE E-Invoice Solutions for businesses across UAE and GCC.">
+  <meta property="og:url" content="https://jcjlooptech.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://jcjlooptech.com/logo.png">
+
+  <link rel="icon" href="logo.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
     html{scroll-behavior:smooth}
-    body{font-family:"Segoe UI",sans-serif;background:#fff;color:#061b36}
+    body{font-family:"Segoe UI",sans-serif;background:#fff;color:#061b36;line-height:1.6}
     a{text-decoration:none;color:inherit}
 
-    .topbar{
-      background:#00c8e8;color:#fff;padding:10px 8%;
-      display:flex;justify-content:space-between;align-items:center
-    }
+    .topbar{background:#00c8e8;color:#fff;padding:10px 8%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap}
     .topbar a{margin-left:18px;font-size:18px}
 
-    header{
-      background:#061b36;color:#fff;padding:24px 8%;
-      display:flex;align-items:center;justify-content:space-between;
-      position:sticky;top:0;z-index:1000
-    }
-
+    header{background:#061b36;color:#fff;padding:22px 8%;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:1000}
     .logo{display:flex;align-items:center;gap:14px}
-    .logo img{
-      width:82px;background:#fff;border-radius:10px;
-      animation:logoFloat 3s ease-in-out infinite;
-      box-shadow:0 0 12px rgba(0,217,255,.5)
-    }
-    .logo h2{
-      color:#00d9ff;font-size:34px;
-      text-shadow:0 0 12px rgba(0,217,255,.6)
-    }
+    .logo img{width:78px;background:#fff;border-radius:10px;box-shadow:0 0 12px rgba(0,217,255,.5)}
+    .logo h2{color:#00d9ff;font-size:32px}
     .logo span{font-size:15px}
 
-    @keyframes logoFloat{
-      0%,100%{transform:translateY(0)}
-      50%{transform:translateY(-6px)}
-    }
+    nav a{margin:0 12px;font-weight:700}
+    nav a:hover{color:#00d9ff}
 
-    nav a{margin:0 14px;font-weight:700}
+    .demo-btn,.btn{background:#00c8e8;color:#001b33;padding:15px 30px;border-radius:35px;font-weight:800;display:inline-block}
+    .btn:hover,.demo-btn:hover{background:#fff;color:#061b36}
 
-    .demo-btn,.btn{
-      background:#00c8e8;color:#001b33;padding:16px 34px;
-      border-radius:35px;font-weight:800;display:inline-block
-    }
-
-    .hero{
-      background:linear-gradient(135deg,#071d3a,#0a3565);
-      color:#fff;min-height:690px;padding:80px 8% 120px;
-      display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center
-    }
-
-    .hero-content{max-width:650px}
-    .hero h1{font-size:68px;line-height:1.1;margin-bottom:25px}
+    .hero{background:linear-gradient(135deg,#071d3a,#0a3565);color:#fff;min-height:680px;padding:80px 8% 120px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+    .hero h1{font-size:62px;line-height:1.1;margin-bottom:25px}
     .hero h1 span{color:#00d9ff}
-    .hero p{font-size:20px;line-height:1.8;margin-bottom:25px}
+    .hero p{font-size:20px;margin-bottom:25px}
+    .hero-badge{display:inline-block;background:#fff;color:#061b36;padding:14px 28px;border-radius:40px;font-weight:800;margin-bottom:30px}
 
-    .hero-badge{
-      display:inline-block;background:#fff;color:#061b36;
-      padding:15px 30px;border-radius:40px;font-weight:800;margin-bottom:30px
-    }
+    .hero-image{width:100%;height:440px;border-radius:26px;overflow:hidden;background:#001b33;box-shadow:0 25px 60px rgba(0,0,0,.4)}
+    .hero-image img{width:100%;height:100%;object-fit:cover}
 
-    .hero-image{
-      width:100%;height:450px;border-radius:26px;overflow:hidden;
-      position:relative;background:#001b33;
-      box-shadow:0 25px 60px rgba(0,0,0,.4)
-    }
-
-    .hero-slider{width:100%;height:100%;position:relative}
-    .slide{
-      position:absolute;inset:0;width:100%;height:100%;
-      object-fit:cover;object-position:center;opacity:0;visibility:hidden;
-      transition:opacity 1s ease-in-out
-    }
-    .slide.active{opacity:1;visibility:visible}
-
-    .counter{
-      background:#fff;color:#061b36;margin:-45px 8% 70px;padding:30px;
-      border-radius:20px;display:grid;grid-template-columns:repeat(4,1fr);
-      gap:20px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.15)
-    }
+    .counter{background:#fff;color:#061b36;margin:-45px 8% 70px;padding:30px;border-radius:20px;display:grid;grid-template-columns:repeat(4,1fr);gap:20px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.15)}
     .counter h2{font-size:38px;color:#0077ff}
 
     section{padding:70px 8%}
     .title{text-align:center;font-size:42px;margin-bottom:45px}
 
-    .about-content{
-      max-width:900px;margin:auto;text-align:center;
-      font-size:20px;line-height:1.8
-    }
+    .about-content{max-width:950px;margin:auto;text-align:center;font-size:20px}
     .about-content p{margin-bottom:18px}
 
-    .cards{
-      display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:25px
-    }
-
-    .card{
-      background:#fff;border-radius:18px;overflow:hidden;
-      box-shadow:0 8px 25px rgba(0,0,0,.12);transition:.3s
-    }
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:25px}
+    .card{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 8px 25px rgba(0,0,0,.12);transition:.3s}
     .card:hover{transform:translateY(-8px)}
     .card img{width:100%;height:220px;object-fit:cover}
     .card-content{text-align:center;padding:25px}
-    .card h3{font-size:22px}
+    .card h3{font-size:22px;margin-bottom:10px}
+    .stars{color:#ffb400;font-size:22px;margin-top:10px}
 
+    .reviews{background:#f4fbff}
     .cta{text-align:center;background:#06264c;color:#fff}
     .cta h2{font-size:42px;margin-bottom:15px}
     .cta p{font-size:20px;margin-bottom:25px}
 
-    footer{
-      background:#061b36;color:#fff;text-align:center;padding:60px 8%
-    }
+    footer{background:#061b36;color:#fff;text-align:center;padding:60px 8%}
     footer h2{font-size:34px;margin-bottom:15px}
     .footer-contact p{margin:15px 0;font-size:20px}
 
-    .call-btn,.whatsapp{
-      position:fixed;right:25px;width:65px;height:65px;border-radius:50%;
-      display:flex;align-items:center;justify-content:center;
-      font-size:28px;color:#fff;z-index:999
-    }
-    .call-btn{bottom:115px;background:#00c8e8}
+    .call-btn,.whatsapp{position:fixed;right:25px;width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:27px;color:#fff;z-index:999}
+    .call-btn{bottom:110px;background:#00c8e8}
     .whatsapp{bottom:35px;background:#25d366}
 
     @media(max-width:900px){
       header{flex-direction:column;gap:18px}
       nav{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
       nav a{margin:0}
-      .hero{grid-template-columns:1fr;padding:60px 6% 100px}
-      .hero h1{font-size:42px}
-      .hero-image{height:320px}
+      .hero{grid-template-columns:1fr;padding:55px 6% 100px}
+      .hero h1{font-size:40px}
+      .hero-image{height:300px}
       .counter{grid-template-columns:repeat(2,1fr)}
     }
   </style>
 </head>
 
 <body>
-  <div class="topbar">
-    <p><i class="fas fa-phone"></i> +971 56 727 5589</p>
+
+<div class="topbar">
+  <p><i class="fas fa-phone"></i> +971 56 727 5589</p>
+  <div>
+    <a href="mailto:jcjlooptech@outlook.com"><i class="fas fa-envelope"></i></a>
+    <a href="https://wa.me/971567275589" target="_blank"><i class="fab fa-whatsapp"></i></a>
+    <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+  </div>
+</div>
+
+<header>
+  <a href="index.html" class="logo">
+    <img src="logo.png" alt="LoopTech Software Solutions Logo">
     <div>
-      <a href="mailto:jcjlooptech@outlook.com"><i class="fas fa-envelope"></i></a>
-      <a href="https://wa.me/971567275589" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i></a>
-      <a href="#"><i class="fab fa-instagram"></i></a>
+      <h2>LoopTech</h2>
+      <span>Software Solutions</span>
+    </div>
+  </a>
+
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#industries">Industries</a>
+    <a href="#services">Services</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <a href="book-demo.html" class="demo-btn">Book Demo</a>
+</header>
+
+<main>
+
+<section class="hero" id="home">
+  <div>
+    <h1>Smart POS Software,<br><span>ERP & E-Invoice Solutions</span></h1>
+    <p>Affordable POS Software, ERP Software, UAE E-Invoice Solutions, Inventory Management and Business Automation for restaurants, retail shops, pharmacies, supermarkets, cafeterias and salons across UAE and GCC.</p>
+    <div class="hero-badge">Serving Businesses Across UAE & GCC</div><br>
+    <a href="book-demo.html" class="btn"><i class="fas fa-calendar-check"></i> Book Free Demo</a>
+  </div>
+
+  <div class="hero-image">
+    <img src="RIGHTSIDEEINVOICE.png" alt="POS Software ERP E-Invoice UAE">
+  </div>
+</section>
+
+<section class="counter">
+  <div><h2>500+</h2><p>Clients</p></div>
+  <div><h2>6+</h2><p>Years Experience</p></div>
+  <div><h2>99%</h2><p>Client Satisfaction</p></div>
+  <div><h2>24/7</h2><p>Technical Support</p></div>
+</section>
+
+<section id="about">
+  <h2 class="title">About LoopTech</h2>
+  <div class="about-content">
+    <p>LoopTech Software Solutions is a UAE-based software provider offering POS Software, ERP Software, UAE E-Invoice Solutions, Inventory Management, Website Development and Digital Marketing services.</p>
+    <p>We help restaurants, retail stores, pharmacies, supermarkets and service businesses reduce manual work, improve billing speed, manage stock, track sales and grow with smart automation.</p>
+  </div>
+</section>
+
+<section id="industries">
+  <h2 class="title">Industries We Serve</h2>
+  <div class="cards">
+    <div class="card"><img src="retailshops.png" alt="Retail POS Software UAE"><div class="card-content"><h3>Retail Stores</h3></div></div>
+    <div class="card"><img src="RESTURANTPOS.png" alt="Restaurant POS Software UAE"><div class="card-content"><h3>Restaurants</h3></div></div>
+    <div class="card"><img src="Cafeteria.webp" alt="Cafeteria POS Software UAE"><div class="card-content"><h3>Cafeteria</h3></div></div>
+    <div class="card"><img src="supermarket.jpg" alt="Supermarket POS Software UAE"><div class="card-content"><h3>Supermarket</h3></div></div>
+    <div class="card"><img src="salon-spa.webp" alt="Salon POS Software UAE"><div class="card-content"><h3>Salon & Spa</h3></div></div>
+    <div class="card"><img src="fashion-store.jpg" alt="Fashion Store POS Software"><div class="card-content"><h3>Fashion Stores</h3></div></div>
+    <div class="card"><img src="mobile-store.jpg" alt="Mobile Store POS Software"><div class="card-content"><h3>Mobile & Electronics</h3></div></div>
+    <div class="card"><img src="laundry.jpg" alt="Laundry Management Software UAE"><div class="card-content"><h3>Laundry</h3></div></div>
+  </div>
+</section>
+
+<section id="services">
+  <h2 class="title">Our Software Services</h2>
+  <div class="cards">
+    <div class="card"><img src="retail-pos.png" alt="POS Software UAE"><div class="card-content"><h3>POS Software</h3><p>Fast billing, sales tracking and inventory control.</p></div></div>
+    <div class="card"><img src="erp.jpg" alt="ERP Software UAE"><div class="card-content"><h3>ERP Software</h3><p>Manage business operations from one dashboard.</p></div></div>
+    <div class="card"><img src="einvoice.jpg" alt="UAE E-Invoice Solution"><div class="card-content"><h3>E-Invoice Solutions</h3><p>Modern invoice solutions for UAE businesses.</p></div></div>
+    <div class="card"><img src="inventorymanagement.jpg" alt="Inventory Management Software UAE"><div class="card-content"><h3>Inventory Management</h3><p>Stock control, reports and product management.</p></div></div>
+    <div class="card"><img src="accounting-integration.jpg" alt="Accounting Software Integration UAE"><div class="card-content"><h3>Accounting Integration</h3><p>Connect sales, billing and accounts easily.</p></div></div>
+    <div class="card"><img src="businessreports.jpg" alt="Business Reports Software UAE"><div class="card-content"><h3>Business Reports</h3><p>Daily sales, profit and performance reports.</p></div></div>
+    <div class="card"><img src="webdevelopment.jpg.avif" alt="Website Development UAE"><div class="card-content"><h3>Website Development</h3><p>Business websites with SEO and enquiry forms.</p></div></div>
+    <div class="card"><img src="socialmedia.avif" alt="Digital Marketing UAE"><div class="card-content"><h3>Digital Marketing</h3><p>Social media, branding and online promotion.</p></div></div>
+  </div>
+</section>
+
+<section class="reviews" id="reviews">
+  <h2 class="title">Client Reviews</h2>
+
+  <div class="cards">
+    <div class="card">
+      <div class="card-content">
+        <h3>Restaurant POS Client</h3>
+        <p>LoopTech helped us manage billing, inventory and business reports easily. Very good support.</p>
+        <div class="stars">★★★★★</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-content">
+        <h3>Retail Shop Client</h3>
+        <p>Affordable POS software with simple dashboard, fast billing and useful sales reports.</p>
+        <div class="stars">★★★★★</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-content">
+        <h3>Business Website Client</h3>
+        <p>Professional website development and software support for our business growth.</p>
+        <div class="stars">★★★★★</div>
+      </div>
     </div>
   </div>
 
-  <header>
-    <a href="index.html" class="logo">
-      <img src="logo.png" alt="LoopTech Software Solutions Logo" />
-      <div>
-        <h2>LoopTech</h2>
-        <span>Software Solutions</span>
-      </div>
+  <div style="text-align:center;margin-top:35px">
+    <a href="https://www.google.com/search?q=LoopTech+Software+Solutions" target="_blank" class="btn">
+      Review Us on Google
     </a>
+  </div>
+</section>
 
-    <nav>
-      <a href="#home">Home</a>
-      <a href="#about">About</a>
-      <a href="#industries">Industries</a>
-      <a href="#services">Services</a>
-      <a href="#contact">Contact</a>
-    </nav>
+<section class="cta">
+  <h2>Ready To Grow Your Business?</h2>
+  <p>Book a free POS, ERP or E-Invoice software demo today.</p>
+  <a href="book-demo.html" class="btn">Book Demo</a>
+</section>
 
-    <a href="book-demo.html" class="demo-btn">Book Demo</a>
-  </header>
+</main>
 
-  <main>
-    <section class="hero" id="home">
-      <div class="hero-content">
-        <h1>
-          Smart POS Software,<br>
-          <span>ERP & E-Invoice Solutions</span>
-        </h1>
+<footer id="contact">
+  <h2>LoopTech Software Solutions</h2>
+  <p>POS Software | ERP Software | E-Invoice Solutions | Website Development</p>
 
-        <p>
-          Affordable POS Software, ERP Software, UAE E-Invoice Solutions,
-          Inventory Management and Business Automation for restaurants,
-          retail shops, pharmacies, supermarkets, cafeterias and salons
-          across UAE and GCC.
-        </p>
+  <div class="footer-contact">
+    <p><a href="tel:+971567275589"><i class="fas fa-phone"></i> +971 56 727 5589</a></p>
+    <p><a href="mailto:jcjlooptech@outlook.com"><i class="fas fa-envelope"></i> jcjlooptech@outlook.com</a></p>
+    <p><i class="fas fa-map-marker-alt"></i> Abu Dhabi, UAE</p>
+  </div>
 
-        <div class="hero-badge">Serving Businesses Across UAE & GCC</div>
+  <p>© 2026 LoopTech Software Solutions. All Rights Reserved.</p>
+</footer>
 
-        <br>
-        <a href="book-demo.html" class="btn">
-          <i class="fas fa-calendar-check"></i> Book Free Demo
-        </a>
-      </div>
+<a href="tel:+971567275589" class="call-btn"><i class="fas fa-phone"></i></a>
+<a href="https://wa.me/971567275589" target="_blank" class="whatsapp"><i class="fab fa-whatsapp"></i></a>
 
-      <div class="hero-image">
-        <div class="hero-slider">
-          <img src="RIGHTSIDEEINVOICE.png" class="slide active" alt="E-Invoice Software UAE" />
-          <img src="erp.jpg" class="slide" alt="ERP Software UAE" />
-          <img src="retail-pos.png" class="slide" alt="POS Software UAE" />
-          <img src="inventorymanagement.jpg" class="slide" alt="Inventory Management Software UAE" />
-          <img src="businessreports.jpg" class="slide" alt="Business Reports Software UAE" />
-          <img src="einvoice.jpg" class="slide" alt="E-Invoice Solution UAE" />
-        </div>
-      </div>
-    </section>
+<script>
+  const slides = document.querySelectorAll(".slide");
+  let currentSlide = 0;
 
-    <section class="counter">
-      <div><h2 class="count" data-target="500">0</h2><p>Clients</p></div>
-      <div><h2 class="count" data-target="6">0</h2><p>Years Experience</p></div>
-      <div><h2 class="count" data-target="99">0</h2><p>Client Satisfaction</p></div>
-      <div><h2>24/7</h2><p>Technical Support</p></div>
-    </section>
+  if (slides.length > 0) {
+    setInterval(() => {
+      slides[currentSlide].classList.remove("active");
+      currentSlide = (currentSlide + 1) % slides.length;
+      slides[currentSlide].classList.add("active");
+    }, 3000);
+  }
+</script>
 
-    <section id="about">
-      <h2 class="title">About LoopTech</h2>
-      <div class="about-content">
-        <p>LoopTech Software Solutions is a UAE-based software company providing POS Software, ERP Software, E-Invoice Solutions, Inventory Management, Website Development and Digital Marketing services.</p>
-        <p>We help businesses reduce manual work, improve billing speed, manage stock, track sales, generate reports and grow with smart automation.</p>
-      </div>
-    </section>
-
-    <section id="industries">
-      <h2 class="title">Industries We Serve</h2>
-      <div class="cards">
-        <div class="card"><img src="retailshops.png" alt="Retail POS Software UAE"><div class="card-content"><h3>Retail Stores</h3></div></div>
-        <div class="card"><img src="RESTURANTPOS.png" alt="Restaurant POS Software UAE"><div class="card-content"><h3>Restaurants</h3></div></div>
-        <div class="card"><img src="Cafeteria.webp" alt="Cafeteria POS Software"><div class="card-content"><h3>Cafeteria</h3></div></div>
-        <div class="card"><img src="supermarket.jpg" alt="Supermarket POS Software"><div class="card-content"><h3>Supermarket</h3></div></div>
-        <div class="card"><img src="salon-spa.webp" alt="Salon Spa POS Software"><div class="card-content"><h3>Salon & Spa</h3></div></div>
-        <div class="card"><img src="fashion-store.jpg" alt="Fashion Store POS Software"><div class="card-content"><h3>Fashion & Garment Stores</h3></div></div>
-        <div class="card"><img src="mobile-store.jpg" alt="Mobile Electronics POS Software"><div class="card-content"><h3>Mobile & Electronics Stores</h3></div></div>
-        <div class="card"><img src="laundry.jpg" alt="Laundry Management Software"><div class="card-content"><h3>Laundry & Dry Cleaning</h3></div></div>
-      </div>
-    </section>
-
-    <section id="services">
-      <h2 class="title">Our Software Services</h2>
-      <div class="cards">
-        <div class="card"><img src="retail-pos.png" alt="POS Software UAE"><div class="card-content"><h3>POS Software</h3></div></div>
-        <div class="card"><img src="erp.jpg" alt="ERP Software UAE"><div class="card-content"><h3>ERP Software</h3></div></div>
-        <div class="card"><img src="einvoice.jpg" alt="UAE E-Invoice Solution"><div class="card-content"><h3>E-Invoice Solutions</h3></div></div>
-        <div class="card"><img src="inventorymanagement.jpg" alt="Inventory Management Software"><div class="card-content"><h3>Inventory Management</h3></div></div>
-        <div class="card"><img src="accounting-integration.jpg" alt="Accounting Integration Software"><div class="card-content"><h3>Accounting Integration</h3></div></div>
-        <div class="card"><img src="businessreports.jpg" alt="Business Reports Software"><div class="card-content"><h3>Business Reports</h3></div></div>
-        <div class="card"><img src="webdevelopment.jpg.avif" alt="Website Development UAE"><div class="card-content"><h3>Website Development</h3></div></div>
-        <div class="card"><img src="socialmedia.avif" alt="Digital Marketing UAE"><div class="card-content"><h3>Digital Marketing</h3></div></div>
-      </div>
-    </section>
-
-    <section class="cta">
-      <h2>Ready To Grow Your Business?</h2>
-      <p>Book a free POS, ERP or E-Invoice software demo today.</p>
-      <a href="book-demo.html" class="btn">Book Demo</a>
-    </section>
-  </main>
-
-  <footer id="contact">
-    <h2>LoopTech Software Solutions</h2>
-    <p>POS Software | ERP Software | E-Invoice Solutions | Website Development</p>
-    <div class="footer-contact">
-      <p><a href="tel:+971567275589"><i class="fas fa-phone"></i> +971 56 727 5589</a></p>
-      <p><a href="mailto:jcjlooptech@outlook.com"><i class="fas fa-envelope"></i> jcjlooptech@outlook.com</a></p>
-      <p><a href="https://maps.google.com/?q=Abu+Dhabi+UAE" target="_blank" rel="noopener"><i class="fas fa-map-marker-alt"></i> Abu Dhabi, UAE</a></p>
-    </div>
-    <p>© 2026 LoopTech Software Solutions. All Rights Reserved.</p>
-  </footer>
-
-  <a href="tel:+971567275589" class="call-btn"><i class="fas fa-phone"></i></a>
-  <a href="https://wa.me/971567275589" target="_blank" rel="noopener" class="whatsapp"><i class="fab fa-whatsapp"></i></a>
-
-  <script src="script.js"></script>
 </body>
 </html>
