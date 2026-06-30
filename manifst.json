@@ -1,0 +1,15 @@
+{
+  "name": "LoopTech Software Solutions",
+  "short_name": "LoopTech",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#061b38",
+  "theme_color": "#00c8e8",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
