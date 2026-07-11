@@ -1,0 +1,16 @@
+{
+  "name": "LoopTech Software Solutions",
+  "short_name": "LoopTech",
+  "description": "POS Software, ERP and E-Invoice Solutions for UAE and GCC",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#061b36",
+  "theme_color": "#00c8e8",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
