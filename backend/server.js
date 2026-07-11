@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const nodemailer = require("nodemailer");
+const axios = require("axios");
 const dns = require("dns");
 
 require("dotenv").config({
@@ -38,80 +38,24 @@ app.use(express.static(ROOT_DIR));
 
 const demoSchema = new mongoose.Schema(
   {
-    name: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-
-    phone: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-
+    name: { type: String, required: true, trim: true },
+    phone: { type: String, required: true, trim: true },
     email: {
       type: String,
       required: true,
       trim: true,
       lowercase: true,
     },
-
-    business: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-
-    businessType: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-
-    service: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-
-    message: {
-      type: String,
-      default: "",
-      trim: true,
-    },
+    business: { type: String, required: true, trim: true },
+    businessType: { type: String, required: true, trim: true },
+    service: { type: String, required: true, trim: true },
+    message: { type: String, default: "", trim: true },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 const Demo =
-  mongoose.models.Demo ||
-  mongoose.model("Demo", demoSchema);
-
-/* =====================================================
-   EMAIL CONFIGURATION
-===================================================== */
-
-const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST || "smtp.gmail.com",
-  port: Number(process.env.EMAIL_PORT) || 587,
-  secure: false,
-
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: String(process.env.EMAIL_PASS || "").replace(/\s/g, ""),
-  },
-
-  pool: true,
-  maxConnections: 2,
-  maxMessages: 50,
-
-  connectionTimeout: 15000,
-  greetingTimeout: 15000,
-  socketTimeout: 25000,
-});
+  mongoose.models.Demo || mongoose.model("Demo", demoSchema);
 
 /* =====================================================
    HELPERS
@@ -121,9 +65,10 @@ function uniqueEmails(...emails) {
   return [
     ...new Set(
       emails
+        .flat()
         .filter(Boolean)
-        .map((email) => String(email).trim())
-        .filter(Boolean)
+        .map((email) => String(email).trim().toLowerCase())
+        .filter(validEmail)
     ),
   ];
 }
@@ -142,7 +87,82 @@ function cleanValue(value) {
 }
 
 function validEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email || ""));
+}
+
+/* =====================================================
+   BREVO HTTP API
+===================================================== */
+
+async function sendBrevoEmail({
+  to,
+  subject,
+  htmlContent,
+  replyTo,
+}) {
+  const apiKey = cleanValue(process.env.BREVO_API_KEY);
+  const senderEmail = cleanValue(process.env.SENDER_EMAIL);
+  const senderName =
+    cleanValue(process.env.SENDER_NAME) ||
+    "LoopTech Software Solutions";
+
+  if (!apiKey) {
+    throw new Error("BREVO_API_KEY is missing.");
+  }
+
+  if (!senderEmail || !validEmail(senderEmail)) {
+    throw new Error("SENDER_EMAIL is missing or invalid.");
+  }
+
+  const recipients = uniqueEmails(
+    Array.isArray(to) ? to : [to]
+  );
+
+  if (recipients.length === 0) {
+    throw new Error("No valid email recipient was provided.");
+  }
+
+  const payload = {
+    sender: {
+      name: senderName,
+      email: senderEmail,
+    },
+    to: recipients.map((email) => ({ email })),
+    subject,
+    htmlContent,
+  };
+
+  if (replyTo && validEmail(replyTo)) {
+    payload.replyTo = { email: replyTo };
+  }
+
+  const response = await axios.post(
+    "https://api.brevo.com/v3/smtp/email",
+    payload,
+    {
+      headers: {
+        accept: "application/json",
+        "api-key": apiKey,
+        "content-type": "application/json",
+      },
+      timeout: 30000,
+    }
+  );
+
+  return response.data;
+}
+
+function getBrevoError(error) {
+  if (error.response) {
+    return {
+      status: error.response.status,
+      data: error.response.data,
+    };
+  }
+
+  return {
+    message: error.message,
+  };
 }
 
 /* =====================================================
@@ -179,6 +199,9 @@ app.get("/health", (req, res) => {
       mongoose.connection.readyState === 1
         ? "connected"
         : "disconnected",
+    brevoConfigured: Boolean(
+      process.env.BREVO_API_KEY && process.env.SENDER_EMAIL
+    ),
     time: new Date().toISOString(),
   });
 });
@@ -190,31 +213,25 @@ app.get("/health", (req, res) => {
 app.get("/test-email", async (req, res) => {
   try {
     const recipients = uniqueEmails(
-      process.env.EMAIL_USER,
-      process.env.ADMIN_EMAIL
+      process.env.ADMIN_EMAIL,
+      process.env.COMPANY_EMAIL
     );
 
     if (recipients.length === 0) {
       throw new Error("No test email recipient configured.");
     }
 
-    const info = await transporter.sendMail({
-      from: `"LoopTech Website" <${process.env.EMAIL_USER}>`,
-      to: recipients.join(", "),
+    const result = await sendBrevoEmail({
+      to: recipients,
+      replyTo: process.env.COMPANY_EMAIL,
       subject: "LoopTech Test Email",
-
-      text:
-        "Email is working successfully from the LoopTech backend.",
-
-      html: `
+      htmlContent: `
         <div style="font-family:Arial,sans-serif;line-height:1.7">
           <h2 style="color:#072448">LoopTech Test Email</h2>
-
           <p>
             Email is working successfully from the
-            LoopTech backend.
+            LoopTech backend through the Brevo HTTP API.
           </p>
-
           <p>
             <b>Website:</b>
             <a href="https://jcjlooptech.com">
@@ -225,15 +242,16 @@ app.get("/test-email", async (req, res) => {
       `,
     });
 
-    console.log("✅ Test email sent:", info.messageId);
+    console.log("✅ Test email sent:", result.messageId);
 
     return res
       .status(200)
-      .send(
-        "✅ Test email sent. Check Gmail, Outlook, Spam and Sent."
-      );
+      .send("✅ Test email sent. Check Inbox and Spam.");
   } catch (error) {
-    console.error("❌ Test Email Error:", error);
+    console.error(
+      "❌ Test Email Error:",
+      getBrevoError(error)
+    );
 
     return res
       .status(500)
@@ -299,11 +317,6 @@ app.post("/api/book-demo", async (req, res) => {
       demo._id.toString()
     );
 
-    /*
-      Return success immediately after MongoDB saves.
-      Browser can open WhatsApp and thank-you page now.
-    */
-
     res.setHeader("Cache-Control", "no-store");
 
     res.status(201).json({
@@ -312,17 +325,16 @@ app.post("/api/book-demo", async (req, res) => {
       bookingId: demo._id.toString(),
     });
 
-    /*
-      Send emails after browser receives success.
-    */
-
     setImmediate(() => {
       sendBookingEmails(demo)
         .then(() => {
           console.log("✅ Booking email process completed");
         })
         .catch((error) => {
-          console.error("❌ Booking Email Error:", error);
+          console.error(
+            "❌ Booking Email Error:",
+            getBrevoError(error)
+          );
         });
     });
   } catch (error) {
@@ -343,18 +355,21 @@ app.post("/api/book-demo", async (req, res) => {
 ===================================================== */
 
 async function sendBookingEmails(data) {
-  const emailUser = process.env.EMAIL_USER;
-
-  const adminEmail =
-    process.env.ADMIN_EMAIL || emailUser;
-
+  const adminEmail = cleanValue(process.env.ADMIN_EMAIL);
   const companyEmail =
-    process.env.COMPANY_EMAIL || emailUser;
+    cleanValue(process.env.COMPANY_EMAIL) ||
+    adminEmail;
 
   const adminRecipients = uniqueEmails(
     adminEmail,
-    emailUser
+    companyEmail
   );
+
+  if (adminRecipients.length === 0) {
+    throw new Error(
+      "ADMIN_EMAIL or COMPANY_EMAIL is missing."
+    );
+  }
 
   const safe = {
     name: escapeHtml(data.name),
@@ -366,133 +381,62 @@ async function sendBookingEmails(data) {
     message: escapeHtml(data.message || "No message"),
   };
 
-  const adminMail = transporter.sendMail({
-    from: `"LoopTech Website" <${emailUser}>`,
-    to: adminRecipients.join(", "),
+  const adminMail = sendBrevoEmail({
+    to: adminRecipients,
     replyTo: data.email,
     subject: `New Demo Request - ${data.business}`,
+    htmlContent: `
+      <div style="max-width:700px;margin:auto;font-family:Arial,sans-serif;line-height:1.7;color:#222">
+        <h2 style="color:#072448">New Demo Request</h2>
 
-    html: `
-      <div
-        style="
-          max-width:700px;
-          margin:auto;
-          font-family:Arial,sans-serif;
-          line-height:1.7;
-          color:#222;
-        "
-      >
-        <h2 style="color:#072448">
-          New Demo Request
-        </h2>
-
-        <table
-          cellpadding="10"
-          cellspacing="0"
-          style="
-            width:100%;
-            border-collapse:collapse;
-          "
-        >
+        <table cellpadding="10" cellspacing="0" style="width:100%;border-collapse:collapse">
           <tr>
+            <td style="border:1px solid #ddd"><b>Name</b></td>
+            <td style="border:1px solid #ddd">${safe.name}</td>
+          </tr>
+          <tr>
+            <td style="border:1px solid #ddd"><b>Phone</b></td>
             <td style="border:1px solid #ddd">
-              <b>Name</b>
-            </td>
-
-            <td style="border:1px solid #ddd">
-              ${safe.name}
+              <a href="tel:${safe.phone}">${safe.phone}</a>
             </td>
           </tr>
-
           <tr>
+            <td style="border:1px solid #ddd"><b>Email</b></td>
             <td style="border:1px solid #ddd">
-              <b>Phone</b>
-            </td>
-
-            <td style="border:1px solid #ddd">
-              <a href="tel:${safe.phone}">
-                ${safe.phone}
-              </a>
+              <a href="mailto:${safe.email}">${safe.email}</a>
             </td>
           </tr>
-
           <tr>
-            <td style="border:1px solid #ddd">
-              <b>Email</b>
-            </td>
-
-            <td style="border:1px solid #ddd">
-              <a href="mailto:${safe.email}">
-                ${safe.email}
-              </a>
-            </td>
+            <td style="border:1px solid #ddd"><b>Business</b></td>
+            <td style="border:1px solid #ddd">${safe.business}</td>
           </tr>
-
           <tr>
-            <td style="border:1px solid #ddd">
-              <b>Business</b>
-            </td>
-
-            <td style="border:1px solid #ddd">
-              ${safe.business}
-            </td>
+            <td style="border:1px solid #ddd"><b>Industry</b></td>
+            <td style="border:1px solid #ddd">${safe.businessType}</td>
           </tr>
-
           <tr>
-            <td style="border:1px solid #ddd">
-              <b>Industry</b>
-            </td>
-
-            <td style="border:1px solid #ddd">
-              ${safe.businessType}
-            </td>
+            <td style="border:1px solid #ddd"><b>Service</b></td>
+            <td style="border:1px solid #ddd">${safe.service}</td>
           </tr>
-
           <tr>
-            <td style="border:1px solid #ddd">
-              <b>Service</b>
-            </td>
-
-            <td style="border:1px solid #ddd">
-              ${safe.service}
-            </td>
-          </tr>
-
-          <tr>
-            <td style="border:1px solid #ddd">
-              <b>Message</b>
-            </td>
-
-            <td style="border:1px solid #ddd">
-              ${safe.message}
-            </td>
+            <td style="border:1px solid #ddd"><b>Message</b></td>
+            <td style="border:1px solid #ddd">${safe.message}</td>
           </tr>
         </table>
 
         <p style="margin-top:20px">
-          This enquiry was submitted through the
-          LoopTech website.
+          This enquiry was submitted through the LoopTech website.
         </p>
       </div>
     `,
   });
 
-  const customerMail = transporter.sendMail({
-    from: `"LoopTech Software Solutions" <${emailUser}>`,
+  const customerMail = sendBrevoEmail({
     to: data.email,
     replyTo: companyEmail,
     subject: "Thank You for Booking a Demo - LoopTech",
-
-    html: `
-      <div
-        style="
-          max-width:650px;
-          margin:auto;
-          font-family:Arial,sans-serif;
-          line-height:1.7;
-          color:#222;
-        "
-      >
+    htmlContent: `
+      <div style="max-width:650px;margin:auto;font-family:Arial,sans-serif;line-height:1.7;color:#222">
         <h2 style="color:#072448">
           Dear ${safe.name},
         </h2>
@@ -503,60 +447,28 @@ async function sendBookingEmails(data) {
           <b>LoopTech Software Solutions</b>.
         </p>
 
-        <p>
-          We have successfully received your request.
-        </p>
+        <p>We have successfully received your request.</p>
 
         <p>
           Our consultant will contact you shortly to
           schedule your personalized demonstration.
         </p>
 
-        <div
-          style="
-            margin:22px 0;
-            padding:18px;
-            border-radius:8px;
-            background:#f4f8fc;
-          "
-        >
-          <h3
-            style="
-              margin-top:0;
-              color:#072448;
-            "
-          >
+        <div style="margin:22px 0;padding:18px;border-radius:8px;background:#f4f8fc">
+          <h3 style="margin-top:0;color:#072448">
             Request Summary
           </h3>
 
-          <p>
-            <b>Business:</b>
-            ${safe.business}
-          </p>
-
-          <p>
-            <b>Industry:</b>
-            ${safe.businessType}
-          </p>
-
-          <p>
-            <b>Requested Service:</b>
-            ${safe.service}
-          </p>
+          <p><b>Business:</b> ${safe.business}</p>
+          <p><b>Industry:</b> ${safe.businessType}</p>
+          <p><b>Requested Service:</b> ${safe.service}</p>
         </div>
 
         <p>
-          If you have any questions,
-          feel free to contact us.
+          If you have any questions, feel free to contact us.
         </p>
 
-        <hr
-          style="
-            margin:22px 0;
-            border:0;
-            border-top:1px solid #ddd;
-          "
-        >
+        <hr style="margin:22px 0;border:0;border-top:1px solid #ddd">
 
         <p>
           <b>Phone:</b>
@@ -580,15 +492,8 @@ async function sendBookingEmails(data) {
         </p>
 
         <p>
-          Thank you for choosing
-          <b>LoopTech Software Solutions</b>.
-        </p>
-
-        <p>
-          Best Regards,
-          <br>
-          <b>LoopTech Software Solutions</b>
-          <br>
+          Best Regards,<br>
+          <b>LoopTech Software Solutions</b><br>
           Abu Dhabi, UAE
         </p>
       </div>
@@ -609,7 +514,7 @@ async function sendBookingEmails(data) {
   } else {
     console.error(
       "❌ Admin email failed:",
-      adminResult.reason
+      getBrevoError(adminResult.reason)
     );
   }
 
@@ -621,7 +526,7 @@ async function sendBookingEmails(data) {
   } else {
     console.error(
       "❌ Customer email failed:",
-      customerResult.reason
+      getBrevoError(customerResult.reason)
     );
   }
 
@@ -631,8 +536,6 @@ async function sendBookingEmails(data) {
   ) {
     throw new Error("Both booking emails failed.");
   }
-
-  console.log("✅ Email processing finished");
 }
 
 /* =====================================================
@@ -641,21 +544,20 @@ async function sendBookingEmails(data) {
 
 async function startServer() {
   try {
-    if (!process.env.MONGODB_URI) {
-      throw new Error(
-        "MONGODB_URI is missing in backend/.env"
-      );
-    }
+    const requiredVariables = [
+      "MONGODB_URI",
+      "BREVO_API_KEY",
+      "SENDER_EMAIL",
+      "ADMIN_EMAIL",
+    ];
 
-    if (!process.env.EMAIL_USER) {
-      throw new Error(
-        "EMAIL_USER is missing in backend/.env"
-      );
-    }
+    const missingVariables = requiredVariables.filter(
+      (name) => !cleanValue(process.env[name])
+    );
 
-    if (!process.env.EMAIL_PASS) {
+    if (missingVariables.length > 0) {
       throw new Error(
-        "EMAIL_PASS is missing in backend/.env"
+        `Missing environment variables: ${missingVariables.join(", ")}`
       );
     }
 
@@ -670,40 +572,24 @@ async function startServer() {
     });
 
     console.log("✅ MongoDB Connected");
-
-    try {
-      await transporter.verify();
-      console.log("✅ Gmail SMTP connection successful");
-    } catch (error) {
-      console.error(
-        "⚠️ Gmail SMTP verification failed:",
-        error.message
-      );
-    }
+    console.log("✅ Brevo HTTP API configured");
 
     app.listen(PORT, "0.0.0.0", () => {
       console.log(
         `✅ Server running: http://localhost:${PORT}`
       );
-
       console.log(
         `✅ Health check: http://localhost:${PORT}/health`
       );
-
       console.log(
         `✅ Email test: http://localhost:${PORT}/test-email`
       );
-
       console.log(
         `✅ Demo page: http://localhost:${PORT}/book-demo.html`
       );
     });
   } catch (error) {
-    console.error(
-      "❌ Startup Error:",
-      error.message
-    );
-
+    console.error("❌ Startup Error:", error.message);
     process.exitCode = 1;
   }
 }
@@ -713,17 +599,11 @@ async function startServer() {
 ===================================================== */
 
 process.on("unhandledRejection", (error) => {
-  console.error(
-    "❌ Unhandled Promise Rejection:",
-    error
-  );
+  console.error("❌ Unhandled Promise Rejection:", error);
 });
 
 process.on("uncaughtException", (error) => {
-  console.error(
-    "❌ Uncaught Exception:",
-    error
-  );
+  console.error("❌ Uncaught Exception:", error);
 });
 
 startServer();
