@@ -1,43 +1,49 @@
-<url>
-  <loc>https://jcjlooptech.com/</loc>
-</url>
+<?xml version="1.0" encoding="UTF-8"?>
 
-<url>
-  <loc>https://jcjlooptech.com/book-demo.html</loc>
-</url>
+<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
 
-<url>
-  <loc>https://jcjlooptech.com/pos-software-uae.html</loc>
-</url>
+  <url>
+    <loc>https://jcjlooptech.com/</loc>
+  </url>
 
-<url>
-  <loc>https://jcjlooptech.com/erp-software-uae.html</loc>
-</url>
+  <url>
+    <loc>https://jcjlooptech.com/book-demo.html</loc>
+  </url>
 
-<url>
-  <loc>https://jcjlooptech.com/restaurant-pos-uae.html</loc>
-</url>
+  <url>
+    <loc>https://jcjlooptech.com/pos-software-uae.html</loc>
+  </url>
 
-<url>
-  <loc>https://jcjlooptech.com/retail-pos-uae.html</loc>
-</url>
+  <url>
+    <loc>https://jcjlooptech.com/erp-software-uae.html</loc>
+  </url>
 
-<url>
-  <loc>https://jcjlooptech.com/pharmacy-pos-uae.html</loc>
-</url>
+  <url>
+    <loc>https://jcjlooptech.com/restaurant-pos-uae.html</loc>
+  </url>
 
-<url>
-  <loc>https://jcjlooptech.com/inventory-management-uae.html</loc>
-</url>
+  <url>
+    <loc>https://jcjlooptech.com/retail-pos-uae.html</loc>
+  </url>
 
-<url>
-  <loc>https://jcjlooptech.com/uae-einvoice.html</loc>
-</url>
+  <url>
+    <loc>https://jcjlooptech.com/pharmacy-pos-uae.html</loc>
+  </url>
 
-<url>
-  <loc>https://jcjlooptech.com/website-development-uae.html</loc>
-</url>
+  <url>
+    <loc>https://jcjlooptech.com/inventory-management-uae.html</loc>
+  </url>
 
-<url>
-  <loc>https://jcjlooptech.com/digital-marketing-uae.html</loc>
-</url>
+  <url>
+    <loc>https://jcjlooptech.com/uae-einvoice.html</loc>
+  </url>
+
+  <url>
+    <loc>https://jcjlooptech.com/website-development-uae.html</loc>
+  </url>
+
+  <url>
+    <loc>https://jcjlooptech.com/digital-marketing-uae.html</loc>
+  </url>
+
+</urlset>
