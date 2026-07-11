@@ -95,20 +95,26 @@ const Demo =
 ===================================================== */
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: process.env.EMAIL_HOST || "smtp.gmail.com",
+  port: Number(process.env.EMAIL_PORT) || 587,
+  secure: false,
 
   auth: {
     user: process.env.EMAIL_USER,
-    pass: (process.env.EMAIL_PASS || "").replace(/\s/g, ""),
+    pass: String(process.env.EMAIL_PASS || "").replace(/\s/g, ""),
   },
 
-  connectionTimeout: 20000,
-  greetingTimeout: 20000,
-  socketTimeout: 30000,
+  pool: true,
+  maxConnections: 2,
+  maxMessages: 50,
+
+  connectionTimeout: 15000,
+  greetingTimeout: 15000,
+  socketTimeout: 25000,
 });
 
 /* =====================================================
-   HELPER FUNCTIONS
+   HELPERS
 ===================================================== */
 
 function uniqueEmails(...emails) {
@@ -131,11 +137,12 @@ function escapeHtml(value = "") {
     .replaceAll("'", "&#039;");
 }
 
-function getMongoHost() {
-  return (
-    process.env.MONGODB_URI?.match(/@([^/?]+)/)?.[1] ||
-    "unknown"
-  );
+function cleanValue(value) {
+  return String(value || "").trim();
+}
+
+function validEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
 /* =====================================================
@@ -146,23 +153,13 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(ROOT_DIR, "index.html"));
 });
 
-app.get(
-  ["/book-demo", "/book-demo.html"],
-  (req, res) => {
-    res.sendFile(
-      path.join(ROOT_DIR, "book-demo.html")
-    );
-  }
-);
+app.get(["/book-demo", "/book-demo.html"], (req, res) => {
+  res.sendFile(path.join(ROOT_DIR, "book-demo.html"));
+});
 
-app.get(
-  ["/thank-you", "/thank-you.html"],
-  (req, res) => {
-    res.sendFile(
-      path.join(ROOT_DIR, "thank-you.html")
-    );
-  }
-);
+app.get(["/thank-you", "/thank-you.html"], (req, res) => {
+  res.sendFile(path.join(ROOT_DIR, "thank-you.html"));
+});
 
 app.get("/favicon.ico", (req, res) => {
   res.sendStatus(204);
@@ -173,13 +170,16 @@ app.get("/favicon.ico", (req, res) => {
 ===================================================== */
 
 app.get("/health", (req, res) => {
-  res.status(200).json({
+  res.setHeader("Cache-Control", "no-store");
+
+  return res.status(200).json({
     success: true,
     message: "LoopTech backend is running",
     mongodb:
       mongoose.connection.readyState === 1
         ? "connected"
         : "disconnected",
+    time: new Date().toISOString(),
   });
 });
 
@@ -195,35 +195,24 @@ app.get("/test-email", async (req, res) => {
     );
 
     if (recipients.length === 0) {
-      throw new Error(
-        "No test email recipient configured."
-      );
+      throw new Error("No test email recipient configured.");
     }
 
     const info = await transporter.sendMail({
-      from:
-        `"LoopTech Website" ` +
-        `<${process.env.EMAIL_USER}>`,
-
+      from: `"LoopTech Website" <${process.env.EMAIL_USER}>`,
       to: recipients.join(", "),
-
       subject: "LoopTech Test Email",
 
       text:
         "Email is working successfully from the LoopTech backend.",
 
       html: `
-        <div
-          style="
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-          "
-        >
-          <h2>LoopTech Test Email</h2>
+        <div style="font-family:Arial,sans-serif;line-height:1.7">
+          <h2 style="color:#072448">LoopTech Test Email</h2>
 
           <p>
-            Email is working successfully
-            from the LoopTech backend.
+            Email is working successfully from the
+            LoopTech backend.
           </p>
 
           <p>
@@ -236,10 +225,7 @@ app.get("/test-email", async (req, res) => {
       `,
     });
 
-    console.log(
-      "✅ Test email sent:",
-      info.messageId
-    );
+    console.log("✅ Test email sent:", info.messageId);
 
     return res
       .status(200)
@@ -247,16 +233,11 @@ app.get("/test-email", async (req, res) => {
         "✅ Test email sent. Check Gmail, Outlook, Spam and Sent."
       );
   } catch (error) {
-    console.error(
-      "❌ Test Email Error:",
-      error
-    );
+    console.error("❌ Test Email Error:", error);
 
     return res
       .status(500)
-      .send(
-        `❌ Email failed: ${error.message}`
-      );
+      .send(`❌ Email failed: ${error.message}`);
   }
 });
 
@@ -264,473 +245,394 @@ app.get("/test-email", async (req, res) => {
    BOOK DEMO API
 ===================================================== */
 
-app.post(
-  "/api/book-demo",
-  async (req, res) => {
-    try {
-      const {
-        name,
-        phone,
-        email,
-        business,
-        businessType,
-        service,
-        message,
-      } = req.body;
+app.post("/api/book-demo", async (req, res) => {
+  try {
+    const name = cleanValue(req.body.name);
+    const phone = cleanValue(req.body.phone);
+    const email = cleanValue(req.body.email).toLowerCase();
+    const business = cleanValue(req.body.business);
+    const businessType = cleanValue(req.body.businessType);
+    const service = cleanValue(req.body.service);
+    const message = cleanValue(req.body.message);
 
-      if (
-        !name ||
-        !phone ||
-        !email ||
-        !business ||
-        !businessType ||
-        !service
-      ) {
-        return res.status(400).json({
-          success: false,
-          message:
-            "Please fill all required fields.",
-        });
-      }
-
-      if (
-        mongoose.connection.readyState !== 1
-      ) {
-        throw new Error(
-          "MongoDB is not connected."
-        );
-      }
-
-      const demo = await Demo.create({
-        name:
-          String(name).trim(),
-
-        phone:
-          String(phone).trim(),
-
-        email:
-          String(email)
-            .trim()
-            .toLowerCase(),
-
-        business:
-          String(business).trim(),
-
-        businessType:
-          String(businessType).trim(),
-
-        service:
-          String(service).trim(),
-
-        message:
-          message
-            ? String(message).trim()
-            : "",
+    if (
+      !name ||
+      !phone ||
+      !email ||
+      !business ||
+      !businessType ||
+      !service
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "Please fill all required fields.",
       });
-
-      console.log(
-        "✅ Demo request saved in MongoDB:",
-        demo._id.toString()
-      );
-
-      res.status(201).json({
-        success: true,
-        message:
-          "Demo request submitted successfully.",
-      });
-
-      sendEmails(demo)
-        .then(() => {
-          console.log(
-            "✅ Booking email process completed"
-          );
-        })
-        .catch((error) => {
-          console.error(
-            "❌ Booking Email Error:",
-            error
-          );
-        });
-    } catch (error) {
-      console.error(
-        "❌ Demo Request Error:",
-        error
-      );
-
-      if (!res.headersSent) {
-        return res.status(500).json({
-          success: false,
-          message:
-            error.message ||
-            "Unable to submit demo request.",
-        });
-      }
     }
-  }
-);
 
-/* =====================================================
-   SEND ADMIN AND CUSTOMER EMAILS
-===================================================== */
+    if (!validEmail(email)) {
+      return res.status(400).json({
+        success: false,
+        message: "Please enter a valid email address.",
+      });
+    }
 
-async function sendEmails(data) {
-  const emailUser =
-    process.env.EMAIL_USER;
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(503).json({
+        success: false,
+        message:
+          "Database is temporarily unavailable. Please try again.",
+      });
+    }
 
-  const adminEmail =
-    process.env.ADMIN_EMAIL ||
-    emailUser;
+    const demo = await Demo.create({
+      name,
+      phone,
+      email,
+      business,
+      businessType,
+      service,
+      message,
+    });
 
-  const companyEmail =
-    process.env.COMPANY_EMAIL ||
-    emailUser;
-
-  const adminRecipients =
-    uniqueEmails(
-      adminEmail,
-      emailUser
+    console.log(
+      "✅ Demo request saved in MongoDB:",
+      demo._id.toString()
     );
 
-  const safeData = {
-    name:
-      escapeHtml(data.name),
+    /*
+      Return success immediately after MongoDB saves.
+      Browser can open WhatsApp and thank-you page now.
+    */
 
-    phone:
-      escapeHtml(data.phone),
+    res.setHeader("Cache-Control", "no-store");
 
-    email:
-      escapeHtml(data.email),
+    res.status(201).json({
+      success: true,
+      message: "Demo request submitted successfully.",
+      bookingId: demo._id.toString(),
+    });
 
-    business:
-      escapeHtml(data.business),
+    /*
+      Send emails after browser receives success.
+    */
 
-    businessType:
-      escapeHtml(data.businessType),
+    setImmediate(() => {
+      sendBookingEmails(demo)
+        .then(() => {
+          console.log("✅ Booking email process completed");
+        })
+        .catch((error) => {
+          console.error("❌ Booking Email Error:", error);
+        });
+    });
+  } catch (error) {
+    console.error("❌ Demo Request Error:", error);
 
-    service:
-      escapeHtml(data.service),
+    if (!res.headersSent) {
+      return res.status(500).json({
+        success: false,
+        message:
+          error.message || "Unable to submit demo request.",
+      });
+    }
+  }
+});
 
-    message:
-      escapeHtml(
-        data.message || "No message"
-      ),
+/* =====================================================
+   SEND BOOKING EMAILS
+===================================================== */
+
+async function sendBookingEmails(data) {
+  const emailUser = process.env.EMAIL_USER;
+
+  const adminEmail =
+    process.env.ADMIN_EMAIL || emailUser;
+
+  const companyEmail =
+    process.env.COMPANY_EMAIL || emailUser;
+
+  const adminRecipients = uniqueEmails(
+    adminEmail,
+    emailUser
+  );
+
+  const safe = {
+    name: escapeHtml(data.name),
+    phone: escapeHtml(data.phone),
+    email: escapeHtml(data.email),
+    business: escapeHtml(data.business),
+    businessType: escapeHtml(data.businessType),
+    service: escapeHtml(data.service),
+    message: escapeHtml(data.message || "No message"),
   };
 
-  const results =
+  const adminMail = transporter.sendMail({
+    from: `"LoopTech Website" <${emailUser}>`,
+    to: adminRecipients.join(", "),
+    replyTo: data.email,
+    subject: `New Demo Request - ${data.business}`,
+
+    html: `
+      <div
+        style="
+          max-width:700px;
+          margin:auto;
+          font-family:Arial,sans-serif;
+          line-height:1.7;
+          color:#222;
+        "
+      >
+        <h2 style="color:#072448">
+          New Demo Request
+        </h2>
+
+        <table
+          cellpadding="10"
+          cellspacing="0"
+          style="
+            width:100%;
+            border-collapse:collapse;
+          "
+        >
+          <tr>
+            <td style="border:1px solid #ddd">
+              <b>Name</b>
+            </td>
+
+            <td style="border:1px solid #ddd">
+              ${safe.name}
+            </td>
+          </tr>
+
+          <tr>
+            <td style="border:1px solid #ddd">
+              <b>Phone</b>
+            </td>
+
+            <td style="border:1px solid #ddd">
+              <a href="tel:${safe.phone}">
+                ${safe.phone}
+              </a>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="border:1px solid #ddd">
+              <b>Email</b>
+            </td>
+
+            <td style="border:1px solid #ddd">
+              <a href="mailto:${safe.email}">
+                ${safe.email}
+              </a>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="border:1px solid #ddd">
+              <b>Business</b>
+            </td>
+
+            <td style="border:1px solid #ddd">
+              ${safe.business}
+            </td>
+          </tr>
+
+          <tr>
+            <td style="border:1px solid #ddd">
+              <b>Industry</b>
+            </td>
+
+            <td style="border:1px solid #ddd">
+              ${safe.businessType}
+            </td>
+          </tr>
+
+          <tr>
+            <td style="border:1px solid #ddd">
+              <b>Service</b>
+            </td>
+
+            <td style="border:1px solid #ddd">
+              ${safe.service}
+            </td>
+          </tr>
+
+          <tr>
+            <td style="border:1px solid #ddd">
+              <b>Message</b>
+            </td>
+
+            <td style="border:1px solid #ddd">
+              ${safe.message}
+            </td>
+          </tr>
+        </table>
+
+        <p style="margin-top:20px">
+          This enquiry was submitted through the
+          LoopTech website.
+        </p>
+      </div>
+    `,
+  });
+
+  const customerMail = transporter.sendMail({
+    from: `"LoopTech Software Solutions" <${emailUser}>`,
+    to: data.email,
+    replyTo: companyEmail,
+    subject: "Thank You for Booking a Demo - LoopTech",
+
+    html: `
+      <div
+        style="
+          max-width:650px;
+          margin:auto;
+          font-family:Arial,sans-serif;
+          line-height:1.7;
+          color:#222;
+        "
+      >
+        <h2 style="color:#072448">
+          Dear ${safe.name},
+        </h2>
+
+        <p>
+          Thank you for booking a
+          <b>FREE Software Demo</b> with
+          <b>LoopTech Software Solutions</b>.
+        </p>
+
+        <p>
+          We have successfully received your request.
+        </p>
+
+        <p>
+          Our consultant will contact you shortly to
+          schedule your personalized demonstration.
+        </p>
+
+        <div
+          style="
+            margin:22px 0;
+            padding:18px;
+            border-radius:8px;
+            background:#f4f8fc;
+          "
+        >
+          <h3
+            style="
+              margin-top:0;
+              color:#072448;
+            "
+          >
+            Request Summary
+          </h3>
+
+          <p>
+            <b>Business:</b>
+            ${safe.business}
+          </p>
+
+          <p>
+            <b>Industry:</b>
+            ${safe.businessType}
+          </p>
+
+          <p>
+            <b>Requested Service:</b>
+            ${safe.service}
+          </p>
+        </div>
+
+        <p>
+          If you have any questions,
+          feel free to contact us.
+        </p>
+
+        <hr
+          style="
+            margin:22px 0;
+            border:0;
+            border-top:1px solid #ddd;
+          "
+        >
+
+        <p>
+          <b>Phone:</b>
+          <a href="tel:+971567275589">
+            +971 56 727 5589
+          </a>
+        </p>
+
+        <p>
+          <b>Email:</b>
+          <a href="mailto:${escapeHtml(companyEmail)}">
+            ${escapeHtml(companyEmail)}
+          </a>
+        </p>
+
+        <p>
+          <b>Website:</b>
+          <a href="https://jcjlooptech.com">
+            https://jcjlooptech.com
+          </a>
+        </p>
+
+        <p>
+          Thank you for choosing
+          <b>LoopTech Software Solutions</b>.
+        </p>
+
+        <p>
+          Best Regards,
+          <br>
+          <b>LoopTech Software Solutions</b>
+          <br>
+          Abu Dhabi, UAE
+        </p>
+      </div>
+    `,
+  });
+
+  const [adminResult, customerResult] =
     await Promise.allSettled([
-      transporter.sendMail({
-        from:
-          `"LoopTech Website" ` +
-          `<${emailUser}>`,
-
-        to:
-          adminRecipients.join(", "),
-
-        replyTo:
-          data.email,
-
-        subject:
-          `New Demo Request - ${data.business}`,
-
-        html: `
-          <div
-            style="
-              font-family: Arial, sans-serif;
-              line-height: 1.6;
-              max-width: 700px;
-              margin: auto;
-            "
-          >
-            <h2 style="color: #072448;">
-              New Demo Request
-            </h2>
-
-            <table
-              cellpadding="10"
-              cellspacing="0"
-              style="
-                width: 100%;
-                max-width: 650px;
-                border-collapse: collapse;
-              "
-            >
-              <tr>
-                <td style="border: 1px solid #dddddd;">
-                  <b>Name</b>
-                </td>
-
-                <td style="border: 1px solid #dddddd;">
-                  ${safeData.name}
-                </td>
-              </tr>
-
-              <tr>
-                <td style="border: 1px solid #dddddd;">
-                  <b>Phone</b>
-                </td>
-
-                <td style="border: 1px solid #dddddd;">
-                  ${safeData.phone}
-                </td>
-              </tr>
-
-              <tr>
-                <td style="border: 1px solid #dddddd;">
-                  <b>Email</b>
-                </td>
-
-                <td style="border: 1px solid #dddddd;">
-                  ${safeData.email}
-                </td>
-              </tr>
-
-              <tr>
-                <td style="border: 1px solid #dddddd;">
-                  <b>Business</b>
-                </td>
-
-                <td style="border: 1px solid #dddddd;">
-                  ${safeData.business}
-                </td>
-              </tr>
-
-              <tr>
-                <td style="border: 1px solid #dddddd;">
-                  <b>Industry</b>
-                </td>
-
-                <td style="border: 1px solid #dddddd;">
-                  ${safeData.businessType}
-                </td>
-              </tr>
-
-              <tr>
-                <td style="border: 1px solid #dddddd;">
-                  <b>Service</b>
-                </td>
-
-                <td style="border: 1px solid #dddddd;">
-                  ${safeData.service}
-                </td>
-              </tr>
-
-              <tr>
-                <td style="border: 1px solid #dddddd;">
-                  <b>Message</b>
-                </td>
-
-                <td style="border: 1px solid #dddddd;">
-                  ${safeData.message}
-                </td>
-              </tr>
-            </table>
-
-            <p style="margin-top: 20px;">
-              This enquiry was submitted through
-              the LoopTech website.
-            </p>
-          </div>
-        `,
-      }),
-
-      transporter.sendMail({
-        from:
-          `"LoopTech Software Solutions" ` +
-          `<${emailUser}>`,
-
-        to:
-          data.email,
-
-        replyTo:
-          companyEmail,
-
-        subject:
-          "Thank You for Booking a Demo - LoopTech",
-
-        html: `
-          <div
-            style="
-              font-family: Arial, sans-serif;
-              line-height: 1.7;
-              max-width: 650px;
-              margin: auto;
-              color: #222222;
-            "
-          >
-            <h2 style="color: #072448;">
-              Dear ${safeData.name},
-            </h2>
-
-            <p>
-              Thank you for booking a
-              <b>FREE Software Demo</b>
-              with
-              <b>LoopTech Software Solutions</b>.
-            </p>
-
-            <p>
-              We have successfully received
-              your request.
-            </p>
-
-            <p>
-              Our consultant will contact you
-              shortly to schedule your
-              personalized demonstration.
-            </p>
-
-            <div
-              style="
-                background: #f4f8fc;
-                border-radius: 8px;
-                padding: 18px;
-                margin: 22px 0;
-              "
-            >
-              <h3
-                style="
-                  color: #072448;
-                  margin-top: 0;
-                "
-              >
-                Request Summary
-              </h3>
-
-              <p>
-                <b>Business:</b>
-                ${safeData.business}
-              </p>
-
-              <p>
-                <b>Industry:</b>
-                ${safeData.businessType}
-              </p>
-
-              <p>
-                <b>Requested Service:</b>
-                ${safeData.service}
-              </p>
-            </div>
-
-            <p>
-              If you have any questions,
-              feel free to contact us.
-            </p>
-
-            <hr
-              style="
-                border: 0;
-                border-top: 1px solid #dddddd;
-                margin: 22px 0;
-              "
-            >
-
-            <p>
-              <b>Phone:</b>
-              <a
-                href="tel:+971567275589"
-                style="color: #072448;"
-              >
-                +971 56 727 5589
-              </a>
-            </p>
-
-            <p>
-              <b>Email:</b>
-              <a
-                href="mailto:${escapeHtml(
-                  companyEmail
-                )}"
-                style="color: #072448;"
-              >
-                ${escapeHtml(
-                  companyEmail
-                )}
-              </a>
-            </p>
-
-            <p>
-              <b>Website:</b>
-              <a
-                href="https://jcjlooptech.com"
-                style="color: #072448;"
-              >
-                https://jcjlooptech.com
-              </a>
-            </p>
-
-            <p>
-              Thank you for choosing
-              <b>
-                LoopTech Software Solutions
-              </b>.
-            </p>
-
-            <p>
-              Best Regards,
-              <br>
-
-              <b>
-                LoopTech Software Solutions
-              </b>
-              <br>
-
-              Abu Dhabi, UAE
-            </p>
-          </div>
-        `,
-      }),
+      adminMail,
+      customerMail,
     ]);
 
-  const [
-    adminEmailResult,
-    customerEmailResult,
-  ] = results;
-
-  if (
-    adminEmailResult.status ===
-    "fulfilled"
-  ) {
+  if (adminResult.status === "fulfilled") {
     console.log(
       "✅ Admin email sent:",
-      adminEmailResult.value.messageId
+      adminResult.value.messageId
     );
   } else {
     console.error(
       "❌ Admin email failed:",
-      adminEmailResult.reason
+      adminResult.reason
     );
   }
 
-  if (
-    customerEmailResult.status ===
-    "fulfilled"
-  ) {
+  if (customerResult.status === "fulfilled") {
     console.log(
       "✅ Customer email sent:",
-      customerEmailResult.value.messageId
+      customerResult.value.messageId
     );
   } else {
     console.error(
       "❌ Customer email failed:",
-      customerEmailResult.reason
+      customerResult.reason
     );
   }
 
   if (
-    adminEmailResult.status ===
-      "rejected" &&
-    customerEmailResult.status ===
-      "rejected"
+    adminResult.status === "rejected" &&
+    customerResult.status === "rejected"
   ) {
-    throw new Error(
-      "Both booking emails failed."
-    );
+    throw new Error("Both booking emails failed.");
   }
 
-  console.log(
-    "✅ Email processing finished"
-  );
+  console.log("✅ Email processing finished");
 }
 
 /* =====================================================
@@ -757,73 +659,49 @@ async function startServer() {
       );
     }
 
-    console.log(
-      `🔄 MongoDB host loaded from .env: ${getMongoHost()}`
-    );
+    console.log("🔄 Connecting to MongoDB...");
 
-    console.log(
-      "🔄 Connecting to MongoDB..."
-    );
+    await mongoose.connect(process.env.MONGODB_URI, {
+      serverSelectionTimeoutMS: 30000,
+      connectTimeoutMS: 30000,
+      socketTimeoutMS: 45000,
+      maxPoolSize: 10,
+      minPoolSize: 1,
+    });
 
-    await mongoose.connect(
-      process.env.MONGODB_URI,
-      {
-        serverSelectionTimeoutMS: 30000,
-        connectTimeoutMS: 30000,
-      }
-    );
-
-    console.log(
-      "✅ MongoDB Connected"
-    );
+    console.log("✅ MongoDB Connected");
 
     try {
       await transporter.verify();
-
-      console.log(
-        "✅ Gmail SMTP connection successful"
-      );
-    } catch (emailError) {
+      console.log("✅ Gmail SMTP connection successful");
+    } catch (error) {
       console.error(
         "⚠️ Gmail SMTP verification failed:",
-        emailError.message
+        error.message
       );
     }
 
-    app.listen(
-      PORT,
-      () => {
-        console.log(
-          `✅ Server running: http://localhost:${PORT}`
-        );
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(
+        `✅ Server running: http://localhost:${PORT}`
+      );
 
-        console.log(
-          `✅ Health check: http://localhost:${PORT}/health`
-        );
+      console.log(
+        `✅ Health check: http://localhost:${PORT}/health`
+      );
 
-        console.log(
-          `✅ Email test: http://localhost:${PORT}/test-email`
-        );
+      console.log(
+        `✅ Email test: http://localhost:${PORT}/test-email`
+      );
 
-        console.log(
-          `✅ Demo page: http://localhost:${PORT}/book-demo.html`
-        );
-      }
-    );
+      console.log(
+        `✅ Demo page: http://localhost:${PORT}/book-demo.html`
+      );
+    });
   } catch (error) {
     console.error(
-      "❌ Startup Error Name:",
-      error.name
-    );
-
-    console.error(
-      "❌ Startup Error Message:",
+      "❌ Startup Error:",
       error.message
-    );
-
-    console.error(
-      "❌ Complete Startup Error:",
-      error
     );
 
     process.exitCode = 1;
@@ -834,24 +712,18 @@ async function startServer() {
    PROCESS ERROR HANDLERS
 ===================================================== */
 
-process.on(
-  "unhandledRejection",
-  (error) => {
-    console.error(
-      "❌ Unhandled Promise Rejection:",
-      error
-    );
-  }
-);
+process.on("unhandledRejection", (error) => {
+  console.error(
+    "❌ Unhandled Promise Rejection:",
+    error
+  );
+});
 
-process.on(
-  "uncaughtException",
-  (error) => {
-    console.error(
-      "❌ Uncaught Exception:",
-      error
-    );
-  }
-);
+process.on("uncaughtException", (error) => {
+  console.error(
+    "❌ Uncaught Exception:",
+    error
+  );
+});
 
 startServer();

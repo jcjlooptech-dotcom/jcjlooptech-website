@@ -20,23 +20,27 @@
 
   <style>
     * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
-      font-family: "Segoe UI", Arial, sans-serif;
       background: #f5f7fa;
       color: #222;
+      font-family: "Segoe UI", Arial, sans-serif;
     }
 
     .header {
-      background: #081c3a;
-      padding: 18px 8%;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding: 18px 8%;
+      background: #081c3a;
     }
 
     .logo {
@@ -49,10 +53,10 @@
     .logo img {
       width: 65px;
       height: 45px;
-      object-fit: contain;
-      background: #fff;
-      border-radius: 8px;
       padding: 3px;
+      border-radius: 8px;
+      background: #fff;
+      object-fit: contain;
     }
 
     .logo h2 {
@@ -60,24 +64,29 @@
     }
 
     .home-btn {
-      background: #00c6ff;
-      color: #fff;
       padding: 12px 28px;
       border-radius: 30px;
-      text-decoration: none;
+      background: #00c6ff;
+      color: #fff;
       font-weight: 700;
+      text-decoration: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .home-btn:hover {
+      opacity: 0.9;
     }
 
     .hero {
-      background: linear-gradient(135deg, #081c3a, #00c6ff);
       padding: 70px 8% 100px;
-      text-align: center;
+      background: linear-gradient(135deg, #081c3a, #00c6ff);
       color: #fff;
+      text-align: center;
     }
 
     .hero h1 {
-      font-size: 42px;
       margin-bottom: 15px;
+      font-size: 42px;
     }
 
     .hero p {
@@ -94,16 +103,16 @@
     }
 
     .form-box {
-      background: #fff;
       padding: 40px;
       border-radius: 20px;
+      background: #fff;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     }
 
     .form-box h2 {
-      text-align: center;
       margin-bottom: 25px;
       color: #081c3a;
+      text-align: center;
     }
 
     .form-group {
@@ -117,10 +126,10 @@
       padding: 14px;
       border: 1px solid #ddd;
       border-radius: 10px;
-      font-size: 15px;
       outline: none;
-      font-family: inherit;
       background: #fff;
+      font: inherit;
+      font-size: 15px;
     }
 
     input:focus,
@@ -150,15 +159,17 @@
 
     .submit-btn {
       width: 100%;
-      background: #25d366;
-      border: none;
       padding: 16px;
+      border: 0;
       border-radius: 10px;
-      font-size: 20px;
+      background: #25d366;
       color: #fff;
-      font-weight: 700;
       cursor: pointer;
-      transition: 0.3s ease;
+      font-size: 20px;
+      font-weight: 700;
+      transition:
+        background 0.2s ease,
+        opacity 0.2s ease;
     }
 
     .submit-btn:hover {
@@ -166,8 +177,8 @@
     }
 
     .submit-btn:disabled {
-      opacity: 0.7;
       cursor: not-allowed;
+      opacity: 0.7;
     }
 
     .form-message {
@@ -177,12 +188,24 @@
       border-radius: 8px;
       text-align: center;
       font-weight: 600;
+      line-height: 1.5;
     }
 
     .form-message.error {
       display: block;
       background: #fff0f0;
       color: #b42318;
+    }
+
+    .server-status {
+      display: none;
+      margin-bottom: 18px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: #fff8e6;
+      color: #8a5a00;
+      text-align: center;
+      font-size: 14px;
     }
 
     .features {
@@ -193,17 +216,17 @@
     }
 
     .feature {
-      background: #fff;
       padding: 30px;
       border-radius: 15px;
+      background: #fff;
       text-align: center;
       box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
     }
 
     .feature i {
-      font-size: 42px;
-      color: #00c6ff;
       margin-bottom: 15px;
+      color: #00c6ff;
+      font-size: 42px;
     }
 
     .feature h3 {
@@ -211,10 +234,14 @@
       color: #081c3a;
     }
 
+    .feature p {
+      line-height: 1.5;
+    }
+
     .footer {
+      padding: 45px 20px;
       background: #081c3a;
       color: #fff;
-      padding: 45px 20px;
       text-align: center;
     }
 
@@ -236,16 +263,16 @@
     .float-whatsapp {
       position: fixed;
       right: 20px;
-      width: 65px;
-      height: 65px;
-      border-radius: 50%;
+      z-index: 999;
       display: flex;
       align-items: center;
       justify-content: center;
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
       color: #fff;
       text-decoration: none;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      z-index: 999;
     }
 
     .float-call {
@@ -265,6 +292,10 @@
         padding: 15px 5%;
       }
 
+      .logo h2 {
+        font-size: 20px;
+      }
+
       .hero {
         padding: 55px 6% 90px;
       }
@@ -273,8 +304,8 @@
         font-size: 30px;
       }
 
-      .logo h2 {
-        font-size: 20px;
+      .hero p {
+        font-size: 16px;
       }
 
       .form-box {
@@ -295,12 +326,19 @@
         width: 55px;
         height: 55px;
       }
+
+      .float-call {
+        bottom: 105px;
+      }
+
+      .float-whatsapp {
+        bottom: 35px;
+      }
     }
   </style>
 </head>
 
 <body>
-
   <header class="header">
     <div class="logo">
       <img
@@ -329,22 +367,31 @@
     <section class="form-box">
       <h2>Request a Free Demo</h2>
 
-      <form id="demoForm">
+      <div id="serverStatus" class="server-status">
+        Our booking server is waking up. You can continue filling the form.
+      </div>
 
+      <form id="demoForm">
         <div class="form-group">
           <input
             type="text"
             id="name"
+            name="name"
             placeholder="Full Name"
             autocomplete="name"
+            maxlength="100"
             required
           >
         </div>
 
         <div class="form-group">
           <div class="phone-group">
-
-            <select id="countryCode" required>
+            <select
+              id="countryCode"
+              name="countryCode"
+              aria-label="Country code"
+              required
+            >
               <option value="+971">🇦🇪 UAE (+971)</option>
               <option value="+966">🇸🇦 Saudi Arabia (+966)</option>
               <option value="+974">🇶🇦 Qatar (+974)</option>
@@ -359,12 +406,13 @@
             <input
               type="tel"
               id="phone"
+              name="phone"
               placeholder="Phone Number"
               autocomplete="tel"
               inputmode="tel"
+              maxlength="20"
               required
             >
-
           </div>
         </div>
 
@@ -372,8 +420,10 @@
           <input
             type="email"
             id="email"
+            name="email"
             placeholder="Email Address"
             autocomplete="email"
+            maxlength="150"
             required
           >
         </div>
@@ -382,14 +432,20 @@
           <input
             type="text"
             id="business"
+            name="business"
             placeholder="Business Name"
             autocomplete="organization"
+            maxlength="150"
             required
           >
         </div>
 
         <div class="form-group">
-          <select id="businessType" required>
+          <select
+            id="businessType"
+            name="businessType"
+            required
+          >
             <option value="">Select Business Type</option>
             <option value="Restaurant">Restaurant</option>
             <option value="Supermarket">Supermarket</option>
@@ -412,17 +468,23 @@
         <div
           class="form-group"
           id="otherBusinessGroup"
-          style="display: none"
+          hidden
         >
           <input
             type="text"
             id="otherBusiness"
+            name="otherBusiness"
             placeholder="Enter Business Type"
+            maxlength="100"
           >
         </div>
 
         <div class="form-group">
-          <select id="service" required>
+          <select
+            id="service"
+            name="service"
+            required
+          >
             <option value="">Select Service</option>
             <option value="POS Software">POS Software</option>
             <option value="ERP Software">ERP Software</option>
@@ -444,7 +506,9 @@
         <div class="form-group">
           <textarea
             id="message"
+            name="message"
             placeholder="Your Requirement"
+            maxlength="2000"
           ></textarea>
         </div>
 
@@ -453,61 +517,48 @@
           class="submit-btn"
           id="submitBtn"
         >
-          <i class="fab fa-whatsapp"></i>
-
-          <span id="submitText">
-            Submit Request
-          </span>
+          <i class="fab fa-whatsapp" aria-hidden="true"></i>
+          <span id="submitText">Submit Request</span>
         </button>
 
         <div
           id="formMessage"
           class="form-message"
           role="alert"
+          aria-live="polite"
         ></div>
-
       </form>
 
       <div class="features">
-
         <div class="feature">
-          <i class="fas fa-cash-register"></i>
-
+          <i class="fas fa-cash-register" aria-hidden="true"></i>
           <h3>POS Software</h3>
-
           <p>
             Fast billing, stock control and business reports.
           </p>
         </div>
 
         <div class="feature">
-          <i class="fas fa-file-invoice"></i>
-
+          <i class="fas fa-file-invoice" aria-hidden="true"></i>
           <h3>E-Invoice</h3>
-
           <p>
             Simple and automated invoice management.
           </p>
         </div>
 
         <div class="feature">
-          <i class="fas fa-chart-line"></i>
-
+          <i class="fas fa-chart-line" aria-hidden="true"></i>
           <h3>ERP Solutions</h3>
-
           <p>
             Manage sales, inventory, accounts and operations.
           </p>
         </div>
-
       </div>
     </section>
   </main>
 
   <footer class="footer">
-    <h2>
-      LoopTech Software Solutions
-    </h2>
+    <h2>LoopTech Software Solutions</h2>
 
     <p>
       📞
@@ -523,13 +574,9 @@
       </a>
     </p>
 
-    <p>
-      📍 Abu Dhabi, UAE
-    </p>
+    <p>📍 Abu Dhabi, UAE</p>
 
-    <p>
-      © 2026 LoopTech. All Rights Reserved.
-    </p>
+    <p>© 2026 LoopTech. All Rights Reserved.</p>
   </footer>
 
   <a
@@ -537,7 +584,7 @@
     class="float-call"
     aria-label="Call LoopTech"
   >
-    <i class="fas fa-phone"></i>
+    <i class="fas fa-phone" aria-hidden="true"></i>
   </a>
 
   <a
@@ -545,240 +592,306 @@
     target="_blank"
     rel="noopener noreferrer"
     class="float-whatsapp"
-    aria-label="WhatsApp LoopTech"
+    aria-label="Chat with LoopTech on WhatsApp"
   >
-    <i class="fab fa-whatsapp"></i>
+    <i class="fab fa-whatsapp" aria-hidden="true"></i>
   </a>
 
   <script>
     "use strict";
 
     const IS_LOCAL =
+      window.location.protocol === "file:" ||
       window.location.hostname === "localhost" ||
       window.location.hostname === "127.0.0.1";
 
-    const API_URL =
-      IS_LOCAL
-        ? "http://localhost:5000/api/book-demo"
-        : "https://looptech-website.onrender.com/api/book-demo";
+    const API_BASE_URL = IS_LOCAL
+      ? "http://localhost:5000"
+      : "https://looptech-website.onrender.com";
 
-    const WHATSAPP_NUMBER =
-      "971567275589";
+    const API_URL = `${API_BASE_URL}/api/book-demo`;
+    const HEALTH_URL = `${API_BASE_URL}/health`;
+    const WHATSAPP_NUMBER = "971567275589";
 
-    const demoForm =
-      document.getElementById("demoForm");
-
-    const submitBtn =
-      document.getElementById("submitBtn");
-
-    const submitText =
-      document.getElementById("submitText");
-
-    const formMessage =
-      document.getElementById("formMessage");
-
-    const businessType =
-      document.getElementById("businessType");
-
+    const demoForm = document.getElementById("demoForm");
+    const submitBtn = document.getElementById("submitBtn");
+    const submitText = document.getElementById("submitText");
+    const formMessage = document.getElementById("formMessage");
+    const serverStatus = document.getElementById("serverStatus");
+    const businessType = document.getElementById("businessType");
     const otherBusinessGroup =
-      document.getElementById(
-        "otherBusinessGroup"
+      document.getElementById("otherBusinessGroup");
+    const otherBusiness = document.getElementById("otherBusiness");
+
+    let isSubmitting = false;
+
+    /*
+      Wake the Render backend as soon as the page opens.
+      This runs while the customer fills the form.
+    */
+    async function wakeServer() {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(
+        () => controller.abort(),
+        70000
       );
 
-    const otherBusiness =
-      document.getElementById("otherBusiness");
+      try {
+        const response = await fetch(HEALTH_URL, {
+          method: "GET",
+          cache: "no-store",
+          signal: controller.signal
+        });
 
-    businessType.addEventListener(
-      "change",
-      function () {
-        const isOther =
-          this.value === "Other Business";
-
-        otherBusinessGroup.style.display =
-          isOther ? "block" : "none";
-
-        otherBusiness.required =
-          isOther;
-
-        if (!isOther) {
-          otherBusiness.value = "";
+        if (response.ok) {
+          serverStatus.style.display = "none";
+          console.log("✅ Booking server is ready");
         }
+      } catch (error) {
+        if (!IS_LOCAL) {
+          serverStatus.style.display = "block";
+        }
+
+        console.log("⏳ Booking server is waking up");
+      } finally {
+        clearTimeout(timeoutId);
       }
-    );
+    }
 
-    function setSubmitting(isSubmitting) {
-      submitBtn.disabled =
-        isSubmitting;
+    wakeServer();
 
-      submitText.textContent =
-        isSubmitting
-          ? "Submitting..."
-          : "Submit Request";
+    businessType.addEventListener("change", function () {
+      const isOther = this.value === "Other Business";
+
+      otherBusinessGroup.hidden = !isOther;
+      otherBusiness.required = isOther;
+
+      if (!isOther) {
+        otherBusiness.value = "";
+      }
+    });
+
+    function setSubmitting(submitting) {
+      isSubmitting = submitting;
+      submitBtn.disabled = submitting;
+
+      submitText.textContent = submitting
+        ? "Submitting..."
+        : "Submit Request";
+    }
+
+    function clearMessage() {
+      formMessage.textContent = "";
+      formMessage.className = "form-message";
     }
 
     function showError(message) {
-      formMessage.textContent =
-        message;
-
-      formMessage.className =
-        "form-message error";
+      formMessage.textContent = message;
+      formMessage.className = "form-message error";
     }
 
-    demoForm.addEventListener(
-      "submit",
-      async function (event) {
-        event.preventDefault();
+    function getFormData() {
+      const selectedBusinessType =
+        businessType.value === "Other Business"
+          ? otherBusiness.value.trim()
+          : businessType.value;
 
-        if (!demoForm.checkValidity()) {
-          demoForm.reportValidity();
-          return;
+      const countryCode =
+        document.getElementById("countryCode").value;
+
+      const phoneNumber =
+        document
+          .getElementById("phone")
+          .value
+          .replace(/[^\d]/g, "")
+          .trim();
+
+      return {
+        name:
+          document
+            .getElementById("name")
+            .value
+            .trim(),
+
+        phone:
+          `${countryCode}${phoneNumber}`,
+
+        email:
+          document
+            .getElementById("email")
+            .value
+            .trim()
+            .toLowerCase(),
+
+        business:
+          document
+            .getElementById("business")
+            .value
+            .trim(),
+
+        businessType:
+          selectedBusinessType,
+
+        service:
+          document
+            .getElementById("service")
+            .value,
+
+        message:
+          document
+            .getElementById("message")
+            .value
+            .trim()
+      };
+    }
+
+    function createWhatsAppUrl(formData) {
+      const whatsappMessage = [
+        "NEW DEMO REQUEST",
+        "",
+        `Name: ${formData.name}`,
+        `Phone: ${formData.phone}`,
+        `Email: ${formData.email}`,
+        `Business: ${formData.business}`,
+        `Industry: ${formData.businessType}`,
+        `Service: ${formData.service}`,
+        `Message: ${formData.message || "No message"}`
+      ].join("\n");
+
+      return (
+        `https://api.whatsapp.com/send/?phone=${WHATSAPP_NUMBER}&text=` +
+        encodeURIComponent(whatsappMessage)
+      );
+    }
+
+    demoForm.addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      if (isSubmitting) {
+        return;
+      }
+
+      if (!demoForm.checkValidity()) {
+        demoForm.reportValidity();
+        return;
+      }
+
+      clearMessage();
+      setSubmitting(true);
+
+      const formData = getFormData();
+
+      if (!formData.businessType) {
+        showError("Please enter your business type.");
+        setSubmitting(false);
+        return;
+      }
+
+      /*
+        Reserve a new tab immediately so the browser
+        does not block WhatsApp after the async request.
+      */
+      const whatsappWindow = window.open(
+        "",
+        "_blank"
+      );
+
+      if (whatsappWindow) {
+        whatsappWindow.document.title =
+          "Opening WhatsApp...";
+        whatsappWindow.document.body.innerHTML =
+          "<p style='font-family:Arial;padding:20px'>Opening WhatsApp...</p>";
+      }
+
+      const controller = new AbortController();
+
+      const timeoutId = setTimeout(
+        () => controller.abort(),
+        90000
+      );
+
+      try {
+        const response = await fetch(API_URL, {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json"
+          },
+
+          body: JSON.stringify(formData),
+
+          cache: "no-store",
+
+          signal: controller.signal
+        });
+
+        const result = await response
+          .json()
+          .catch(() => ({}));
+
+        if (!response.ok || result.success === false) {
+          throw new Error(
+            result.message ||
+            "Unable to submit your request."
+          );
         }
 
-        setSubmitting(true);
+        /*
+          Save data so the thank-you page WhatsApp
+          button can also use the submitted details.
+        */
+        localStorage.setItem(
+          "demoData",
+          JSON.stringify(formData)
+        );
 
-        formMessage.className =
-          "form-message";
+        const whatsappUrl =
+          createWhatsAppUrl(formData);
 
-        formMessage.textContent =
-          "";
-
-        const selectedBusinessType =
-          businessType.value ===
-          "Other Business"
-            ? otherBusiness.value.trim()
-            : businessType.value;
-
-        const phoneNumber =
-          document
-            .getElementById("phone")
-            .value
-            .replace(/\s+/g, "")
-            .trim();
-
-        const formData = {
-          name:
-            document
-              .getElementById("name")
-              .value
-              .trim(),
-
-          phone:
-            document
-              .getElementById("countryCode")
-              .value +
-            phoneNumber,
-
-          email:
-            document
-              .getElementById("email")
-              .value
-              .trim()
-              .toLowerCase(),
-
-          business:
-            document
-              .getElementById("business")
-              .value
-              .trim(),
-
-          businessType:
-            selectedBusinessType,
-
-          service:
-            document
-              .getElementById("service")
-              .value,
-
-          message:
-            document
-              .getElementById("message")
-              .value
-              .trim()
-        };
-
-        try {
-          const response =
-            await fetch(
-              API_URL,
-              {
-                method: "POST",
-
-                headers: {
-                  "Content-Type":
-                    "application/json"
-                },
-
-                body:
-                  JSON.stringify(formData)
-              }
-            );
-
-          const result =
-            await response
-              .json()
-              .catch(() => ({}));
-
-          if (
-            !response.ok ||
-            result.success === false
-          ) {
-            throw new Error(
-              result.message ||
-              "Unable to submit your request."
-            );
-          }
-
-          const whatsappMessage = [
-            "NEW DEMO REQUEST",
-
-            `Name: ${formData.name}`,
-
-            `Phone: ${formData.phone}`,
-
-            `Email: ${formData.email}`,
-
-            `Business: ${formData.business}`,
-
-            `Industry: ${formData.businessType}`,
-
-            `Service: ${formData.service}`,
-
-            `Message: ${
-              formData.message ||
-              "No message"
-            }`
-          ].join("\n");
-
-          const whatsappUrl =
-            `https://api.whatsapp.com/send/?phone=${WHATSAPP_NUMBER}&text=` +
-            encodeURIComponent(
-              whatsappMessage
-            );
-
+        if (whatsappWindow) {
+          whatsappWindow.location.href =
+            whatsappUrl;
+        } else {
           window.open(
             whatsappUrl,
             "_blank",
             "noopener,noreferrer"
           );
-
-          window.location.href =
-            "thank-you.html";
-
-        } catch (error) {
-          console.error(
-            "Demo submission failed:",
-            error
-          );
-
-          showError(
-            "Unable to submit now. Please try again after a moment."
-          );
-
-          setSubmitting(false);
         }
-      }
-    );
-  </script>
 
+        window.location.href =
+          "thank-you.html";
+
+      } catch (error) {
+        console.error(
+          "Demo submission failed:",
+          error
+        );
+
+        if (
+          whatsappWindow &&
+          !whatsappWindow.closed
+        ) {
+          whatsappWindow.close();
+        }
+
+        if (error.name === "AbortError") {
+          showError(
+            "The server is taking longer than expected. Please wait a moment and submit again."
+          );
+        } else {
+          showError(
+            error.message ||
+            "Unable to submit now. Please try again."
+          );
+        }
+
+        setSubmitting(false);
+
+      } finally {
+        clearTimeout(timeoutId);
+      }
+    });
+  </script>
 </body>
 </html>
