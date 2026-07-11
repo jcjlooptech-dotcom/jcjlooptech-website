@@ -1,289 +1,324 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Book Free POS Software Demo | LoopTech UAE</title>
-  <meta name="description" content="Book a free demo for POS Software, ERP Software and UAE E-Invoice Solutions from LoopTech Software Solutions." />
 
-  <link rel="icon" href="logo.png" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <meta
+    name="description"
+    content="Book a free demo for POS Software, ERP Software and UAE E-Invoice Solutions from LoopTech Software Solutions."
+  >
+
+  <link rel="icon" href="logo.png">
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  >
 
   <style>
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    body{
-      font-family:"Segoe UI",sans-serif;
-      background:#f5f7fa;
-      color:#222;
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f5f7fa;
+      color: #222;
     }
 
-    .header{
-      background:#081c3a;
-      padding:18px 8%;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
+    .header {
+      background: #081c3a;
+      padding: 18px 8%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
-    .logo{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      color:#fff;
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #fff;
     }
 
-    .logo img{
-      width:65px;
-      background:#fff;
-      border-radius:8px;
+    .logo img {
+      width: 65px;
+      height: 45px;
+      object-fit: contain;
+      background: #fff;
+      border-radius: 8px;
+      padding: 3px;
     }
 
-    .logo h2{
-      font-size:26px;
+    .logo h2 {
+      font-size: 26px;
     }
 
-    .home-btn{
-      background:#00c6ff;
-      color:#fff;
-      padding:12px 28px;
-      border-radius:30px;
-      text-decoration:none;
-      font-weight:700;
+    .home-btn {
+      background: #00c6ff;
+      color: #fff;
+      padding: 12px 28px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 700;
     }
 
-    .hero{
-      background:linear-gradient(135deg,#081c3a,#00c6ff);
-      padding:70px 8% 100px;
-      text-align:center;
-      color:#fff;
+    .hero {
+      background: linear-gradient(135deg, #081c3a, #00c6ff);
+      padding: 70px 8% 100px;
+      text-align: center;
+      color: #fff;
     }
 
-    .hero h1{
-      font-size:42px;
-      margin-bottom:15px;
+    .hero h1 {
+      font-size: 42px;
+      margin-bottom: 15px;
     }
 
-    .hero p{
-      max-width:760px;
-      margin:auto;
-      font-size:18px;
-      line-height:1.7;
+    .hero p {
+      max-width: 760px;
+      margin: auto;
+      font-size: 18px;
+      line-height: 1.7;
     }
 
-    .container{
-      max-width:1000px;
-      margin:-50px auto 50px;
-      padding:0 20px;
+    .container {
+      max-width: 1000px;
+      margin: -50px auto 50px;
+      padding: 0 20px;
     }
 
-    .form-box{
-      background:#fff;
-      padding:40px;
-      border-radius:20px;
-      box-shadow:0 10px 30px rgba(0,0,0,.1);
+    .form-box {
+      background: #fff;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     }
 
-    .form-box h2{
-      text-align:center;
-      margin-bottom:25px;
-      color:#081c3a;
+    .form-box h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #081c3a;
     }
 
-    .form-group{
-      margin-bottom:18px;
+    .form-group {
+      margin-bottom: 18px;
     }
 
     input,
     select,
-    textarea{
-      width:100%;
-      padding:14px;
-      border:1px solid #ddd;
-      border-radius:10px;
-      font-size:15px;
-      outline:none;
-      font-family:inherit;
-      background:#fff;
+    textarea {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 15px;
+      outline: none;
+      font-family: inherit;
+      background: #fff;
     }
 
     input:focus,
     select:focus,
-    textarea:focus{
-      border-color:#00c6ff;
+    textarea:focus {
+      border-color: #00c6ff;
+      box-shadow: 0 0 0 3px rgba(0, 198, 255, 0.12);
     }
 
-    .phone-group{
-      display:flex;
-      gap:10px;
+    .phone-group {
+      display: flex;
+      gap: 10px;
     }
 
-    .phone-group select{
-      width:35%;
+    .phone-group select {
+      width: 35%;
     }
 
-    .phone-group input{
-      width:65%;
+    .phone-group input {
+      width: 65%;
     }
 
-    textarea{
-      min-height:120px;
-      resize:vertical;
+    textarea {
+      min-height: 120px;
+      resize: vertical;
     }
 
-    .submit-btn{
-      width:100%;
-      background:#25d366;
-      border:none;
-      padding:16px;
-      border-radius:10px;
-      font-size:20px;
-      color:#fff;
-      font-weight:700;
-      cursor:pointer;
-      transition:.3s ease;
+    .submit-btn {
+      width: 100%;
+      background: #25d366;
+      border: none;
+      padding: 16px;
+      border-radius: 10px;
+      font-size: 20px;
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.3s ease;
     }
 
-    .submit-btn:hover{
-      background:#1db954;
+    .submit-btn:hover {
+      background: #1db954;
     }
 
-    .submit-btn:disabled{
-      opacity:.7;
-      cursor:not-allowed;
+    .submit-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
     }
 
-    .features{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-      gap:20px;
-      margin-top:40px;
+    .form-message {
+      display: none;
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: 600;
     }
 
-    .feature{
-      background:#fff;
-      padding:30px;
-      border-radius:15px;
-      text-align:center;
-      box-shadow:0 5px 20px rgba(0,0,0,.08);
+    .form-message.error {
+      display: block;
+      background: #fff0f0;
+      color: #b42318;
     }
 
-    .feature i{
-      font-size:42px;
-      color:#00c6ff;
-      margin-bottom:15px;
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 20px;
+      margin-top: 40px;
     }
 
-    .feature h3{
-      margin-bottom:10px;
-      color:#081c3a;
+    .feature {
+      background: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
     }
 
-    .footer{
-      background:#081c3a;
-      color:#fff;
-      padding:45px 20px;
-      text-align:center;
+    .feature i {
+      font-size: 42px;
+      color: #00c6ff;
+      margin-bottom: 15px;
     }
 
-    .footer h2{
-      margin-bottom:20px;
+    .feature h3 {
+      margin-bottom: 10px;
+      color: #081c3a;
     }
 
-    .footer p{
-      margin:8px 0;
-      font-size:18px;
+    .footer {
+      background: #081c3a;
+      color: #fff;
+      padding: 45px 20px;
+      text-align: center;
     }
 
-    .footer a{
-      color:#fff;
-      text-decoration:none;
+    .footer h2 {
+      margin-bottom: 20px;
+    }
+
+    .footer p {
+      margin: 8px 0;
+      font-size: 18px;
+    }
+
+    .footer a {
+      color: #fff;
+      text-decoration: none;
     }
 
     .float-call,
-    .float-whatsapp{
-      position:fixed;
-      right:20px;
-      width:65px;
-      height:65px;
-      border-radius:50%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      color:#fff;
-      text-decoration:none;
-      box-shadow:0 5px 15px rgba(0,0,0,.3);
-      z-index:999;
+    .float-whatsapp {
+      position: fixed;
+      right: 20px;
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      text-decoration: none;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      z-index: 999;
     }
 
-    .float-call{
-      bottom:115px;
-      background:#ff7a00;
-      font-size:28px;
+    .float-call {
+      bottom: 115px;
+      background: #ff7a00;
+      font-size: 28px;
     }
 
-    .float-whatsapp{
-      bottom:35px;
-      background:#25d366;
-      font-size:32px;
+    .float-whatsapp {
+      bottom: 35px;
+      background: #25d366;
+      font-size: 32px;
     }
 
-    @media(max-width:768px){
-      .header{
-        padding:15px 5%;
+    @media (max-width: 768px) {
+      .header {
+        padding: 15px 5%;
       }
 
-      .hero{
-        padding:55px 6% 90px;
+      .hero {
+        padding: 55px 6% 90px;
       }
 
-      .hero h1{
-        font-size:30px;
+      .hero h1 {
+        font-size: 30px;
       }
 
-      .logo h2{
-        font-size:20px;
+      .logo h2 {
+        font-size: 20px;
       }
 
-      .form-box{
-        padding:25px;
+      .form-box {
+        padding: 25px;
       }
 
-      .phone-group{
-        flex-direction:column;
+      .phone-group {
+        flex-direction: column;
       }
 
       .phone-group select,
-      .phone-group input{
-        width:100%;
+      .phone-group input {
+        width: 100%;
       }
 
       .float-call,
-      .float-whatsapp{
-        width:55px;
-        height:55px;
+      .float-whatsapp {
+        width: 55px;
+        height: 55px;
       }
     }
   </style>
 </head>
 
 <body>
+
   <header class="header">
     <div class="logo">
-      <img src="logo.png" alt="LoopTech Software Solutions Logo" />
+      <img
+        src="logo.png"
+        alt="LoopTech Software Solutions Logo"
+      >
+
       <h2>LoopTech</h2>
     </div>
 
-    <a href="index.html" class="home-btn">Home</a>
+    <a href="index.html" class="home-btn">
+      Home
+    </a>
   </header>
 
   <section class="hero">
     <h1>Book Your Free Software Demo</h1>
+
     <p>
       Explore POS Software, ERP Solutions and UAE E-Invoice Systems
       for your business with a free personalized demo.
@@ -295,12 +330,20 @@
       <h2>Request a Free Demo</h2>
 
       <form id="demoForm">
+
         <div class="form-group">
-          <input type="text" id="name" placeholder="Full Name" required />
+          <input
+            type="text"
+            id="name"
+            placeholder="Full Name"
+            autocomplete="name"
+            required
+          >
         </div>
 
         <div class="form-group">
           <div class="phone-group">
+
             <select id="countryCode" required>
               <option value="+971">🇦🇪 UAE (+971)</option>
               <option value="+966">🇸🇦 Saudi Arabia (+966)</option>
@@ -313,117 +356,429 @@
               <option value="+44">🇬🇧 UK (+44)</option>
             </select>
 
-            <input type="tel" id="phone" placeholder="Phone Number" required />
+            <input
+              type="tel"
+              id="phone"
+              placeholder="Phone Number"
+              autocomplete="tel"
+              inputmode="tel"
+              required
+            >
+
           </div>
         </div>
 
         <div class="form-group">
-          <input type="email" id="email" placeholder="Email Address" required />
+          <input
+            type="email"
+            id="email"
+            placeholder="Email Address"
+            autocomplete="email"
+            required
+          >
         </div>
 
         <div class="form-group">
-          <input type="text" id="business" placeholder="Business Name" required />
+          <input
+            type="text"
+            id="business"
+            placeholder="Business Name"
+            autocomplete="organization"
+            required
+          >
         </div>
 
         <div class="form-group">
           <select id="businessType" required>
             <option value="">Select Business Type</option>
-            <option>Restaurant</option>
-            <option>Supermarket</option>
-            <option>Pharmacy</option>
-            <option>Retail Shop</option>
-            <option>Cafeteria</option>
-            <option>Salon & Spa</option>
-            <option>Mobile & Electronics Store</option>
-            <option>Fashion & Garment Store</option>
-            <option>Other Business</option>
+            <option value="Restaurant">Restaurant</option>
+            <option value="Supermarket">Supermarket</option>
+            <option value="Pharmacy">Pharmacy</option>
+            <option value="Retail Shop">Retail Shop</option>
+            <option value="Cafeteria">Cafeteria</option>
+            <option value="Salon & Spa">Salon & Spa</option>
+            <option value="Mobile & Electronics Store">
+              Mobile & Electronics Store
+            </option>
+            <option value="Fashion & Garment Store">
+              Fashion & Garment Store
+            </option>
+            <option value="Other Business">
+              Other Business
+            </option>
           </select>
         </div>
 
-        <div class="form-group" id="otherBusinessGroup" style="display:none;">
+        <div
+          class="form-group"
+          id="otherBusinessGroup"
+          style="display: none"
+        >
           <input
             type="text"
             id="otherBusiness"
             placeholder="Enter Business Type"
-          />
+          >
         </div>
 
         <div class="form-group">
           <select id="service" required>
             <option value="">Select Service</option>
-            <option>POS Software</option>
-            <option>ERP Software</option>
-            <option>E-Invoice Solution</option>
-            <option>Inventory Management</option>
-            <option>Website Development</option>
-            <option>Digital Marketing</option>
+            <option value="POS Software">POS Software</option>
+            <option value="ERP Software">ERP Software</option>
+            <option value="E-Invoice Solution">
+              E-Invoice Solution
+            </option>
+            <option value="Inventory Management">
+              Inventory Management
+            </option>
+            <option value="Website Development">
+              Website Development
+            </option>
+            <option value="Digital Marketing">
+              Digital Marketing
+            </option>
           </select>
         </div>
 
         <div class="form-group">
-          <textarea id="message" placeholder="Your Requirement"></textarea>
+          <textarea
+            id="message"
+            placeholder="Your Requirement"
+          ></textarea>
         </div>
 
-        <button type="submit" class="submit-btn" id="submitBtn">
-          <i class="fab fa-whatsapp"></i> Submit Request
+        <button
+          type="submit"
+          class="submit-btn"
+          id="submitBtn"
+        >
+          <i class="fab fa-whatsapp"></i>
+
+          <span id="submitText">
+            Submit Request
+          </span>
         </button>
+
+        <div
+          id="formMessage"
+          class="form-message"
+          role="alert"
+        ></div>
+
       </form>
 
       <div class="features">
+
         <div class="feature">
           <i class="fas fa-cash-register"></i>
+
           <h3>POS Software</h3>
-          <p>Fast billing, stock control and business reports.</p>
+
+          <p>
+            Fast billing, stock control and business reports.
+          </p>
         </div>
 
         <div class="feature">
           <i class="fas fa-file-invoice"></i>
+
           <h3>E-Invoice</h3>
-          <p>Simple and automated invoice management.</p>
+
+          <p>
+            Simple and automated invoice management.
+          </p>
         </div>
 
         <div class="feature">
           <i class="fas fa-chart-line"></i>
+
           <h3>ERP Solutions</h3>
-          <p>Manage sales, inventory, accounts and operations.</p>
+
+          <p>
+            Manage sales, inventory, accounts and operations.
+          </p>
         </div>
+
       </div>
     </section>
   </main>
 
   <footer class="footer">
-    <h2>LoopTech Software Solutions</h2>
-    <p>📞 <a href="tel:+971567275589">+971 56 727 5589</a></p>
-    <p>📧 <a href="mailto:jcjlooptech@outlook.com">jcjlooptech@outlook.com</a></p>
-    <p>📍 Abu Dhabi, UAE</p>
-    <p>© 2026 LoopTech. All Rights Reserved.</p>
+    <h2>
+      LoopTech Software Solutions
+    </h2>
+
+    <p>
+      📞
+      <a href="tel:+971567275589">
+        +971 56 727 5589
+      </a>
+    </p>
+
+    <p>
+      📧
+      <a href="mailto:jcjlooptech@gmail.com">
+        jcjlooptech@gmail.com
+      </a>
+    </p>
+
+    <p>
+      📍 Abu Dhabi, UAE
+    </p>
+
+    <p>
+      © 2026 LoopTech. All Rights Reserved.
+    </p>
   </footer>
 
-  <a href="tel:+971567275589" class="float-call" aria-label="Call LoopTech">
+  <a
+    href="tel:+971567275589"
+    class="float-call"
+    aria-label="Call LoopTech"
+  >
     <i class="fas fa-phone"></i>
   </a>
 
-  <a href="https://wa.me/971567275589" target="_blank" rel="noopener" class="float-whatsapp" aria-label="WhatsApp LoopTech">
+  <a
+    href="https://wa.me/971567275589"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="float-whatsapp"
+    aria-label="WhatsApp LoopTech"
+  >
     <i class="fab fa-whatsapp"></i>
   </a>
 
-  <script src="script.js"></script>
-
   <script>
-    const businessType = document.getElementById("businessType");
-    const otherBusinessGroup = document.getElementById("otherBusinessGroup");
-    const otherBusiness = document.getElementById("otherBusiness");
+    "use strict";
 
-    businessType.addEventListener("change", function () {
-      if (this.value === "Other Business") {
-        otherBusinessGroup.style.display = "block";
-        otherBusiness.required = true;
-      } else {
-        otherBusinessGroup.style.display = "none";
-        otherBusiness.required = false;
-        otherBusiness.value = "";
+    const IS_LOCAL =
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1";
+
+    const API_URL =
+      IS_LOCAL
+        ? "http://localhost:5000/api/book-demo"
+        : "https://looptech-website.onrender.com/api/book-demo";
+
+    const WHATSAPP_NUMBER =
+      "971567275589";
+
+    const demoForm =
+      document.getElementById("demoForm");
+
+    const submitBtn =
+      document.getElementById("submitBtn");
+
+    const submitText =
+      document.getElementById("submitText");
+
+    const formMessage =
+      document.getElementById("formMessage");
+
+    const businessType =
+      document.getElementById("businessType");
+
+    const otherBusinessGroup =
+      document.getElementById(
+        "otherBusinessGroup"
+      );
+
+    const otherBusiness =
+      document.getElementById("otherBusiness");
+
+    businessType.addEventListener(
+      "change",
+      function () {
+        const isOther =
+          this.value === "Other Business";
+
+        otherBusinessGroup.style.display =
+          isOther ? "block" : "none";
+
+        otherBusiness.required =
+          isOther;
+
+        if (!isOther) {
+          otherBusiness.value = "";
+        }
       }
-    });
+    );
+
+    function setSubmitting(isSubmitting) {
+      submitBtn.disabled =
+        isSubmitting;
+
+      submitText.textContent =
+        isSubmitting
+          ? "Submitting..."
+          : "Submit Request";
+    }
+
+    function showError(message) {
+      formMessage.textContent =
+        message;
+
+      formMessage.className =
+        "form-message error";
+    }
+
+    demoForm.addEventListener(
+      "submit",
+      async function (event) {
+        event.preventDefault();
+
+        if (!demoForm.checkValidity()) {
+          demoForm.reportValidity();
+          return;
+        }
+
+        setSubmitting(true);
+
+        formMessage.className =
+          "form-message";
+
+        formMessage.textContent =
+          "";
+
+        const selectedBusinessType =
+          businessType.value ===
+          "Other Business"
+            ? otherBusiness.value.trim()
+            : businessType.value;
+
+        const phoneNumber =
+          document
+            .getElementById("phone")
+            .value
+            .replace(/\s+/g, "")
+            .trim();
+
+        const formData = {
+          name:
+            document
+              .getElementById("name")
+              .value
+              .trim(),
+
+          phone:
+            document
+              .getElementById("countryCode")
+              .value +
+            phoneNumber,
+
+          email:
+            document
+              .getElementById("email")
+              .value
+              .trim()
+              .toLowerCase(),
+
+          business:
+            document
+              .getElementById("business")
+              .value
+              .trim(),
+
+          businessType:
+            selectedBusinessType,
+
+          service:
+            document
+              .getElementById("service")
+              .value,
+
+          message:
+            document
+              .getElementById("message")
+              .value
+              .trim()
+        };
+
+        try {
+          const response =
+            await fetch(
+              API_URL,
+              {
+                method: "POST",
+
+                headers: {
+                  "Content-Type":
+                    "application/json"
+                },
+
+                body:
+                  JSON.stringify(formData)
+              }
+            );
+
+          const result =
+            await response
+              .json()
+              .catch(() => ({}));
+
+          if (
+            !response.ok ||
+            result.success === false
+          ) {
+            throw new Error(
+              result.message ||
+              "Unable to submit your request."
+            );
+          }
+
+          const whatsappMessage = [
+            "NEW DEMO REQUEST",
+
+            `Name: ${formData.name}`,
+
+            `Phone: ${formData.phone}`,
+
+            `Email: ${formData.email}`,
+
+            `Business: ${formData.business}`,
+
+            `Industry: ${formData.businessType}`,
+
+            `Service: ${formData.service}`,
+
+            `Message: ${
+              formData.message ||
+              "No message"
+            }`
+          ].join("\n");
+
+          const whatsappUrl =
+            `https://api.whatsapp.com/send/?phone=${WHATSAPP_NUMBER}&text=` +
+            encodeURIComponent(
+              whatsappMessage
+            );
+
+          window.open(
+            whatsappUrl,
+            "_blank",
+            "noopener,noreferrer"
+          );
+
+          window.location.href =
+            "thank-you.html";
+
+        } catch (error) {
+          console.error(
+            "Demo submission failed:",
+            error
+          );
+
+          showError(
+            "Unable to submit now. Please try again after a moment."
+          );
+
+          setSubmitting(false);
+        }
+      }
+    );
   </script>
+
 </body>
 </html>
